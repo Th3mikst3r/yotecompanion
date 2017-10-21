@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.models;
+package com.aura.YoteCompanion.Models;
 
 import com.google.firebase.database.Exclude;
 

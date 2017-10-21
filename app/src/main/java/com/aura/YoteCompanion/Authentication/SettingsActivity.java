@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.Activities;
+package com.aura.YoteCompanion.Authentication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +13,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.aura.YoteCompanion.Authentication.LoginActivity;
-import com.aura.YoteCompanion.Authentication.SignupActivity;
 import com.aura.YoteCompanion.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

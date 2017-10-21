@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.Activities;
+package com.aura.YoteCompanion.NoteActivities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,14 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.aura.YoteCompanion.Authentication.LogoutActivity;
+import com.aura.YoteCompanion.Authentication.SettingsActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.aura.YoteCompanion.adapters.NotesAdapter;
+import com.aura.YoteCompanion.helpers.NotesAdapter;
 import com.aura.YoteCompanion.helpers.DividerItemDecoration;
-import com.aura.YoteCompanion.models.Note;
+import com.aura.YoteCompanion.Models.Note;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

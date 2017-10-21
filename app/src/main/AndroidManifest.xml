@@ -21,48 +21,48 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.AddNotes"
+            android:name=".NoteActivities.AddNotes"
             android:label="@string/title_activity_add_notes"
-            android:parentActivityName=".Activities.NotesList"
+            android:parentActivityName=".NoteActivities.NotesList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
             android:name=".Authentication.UserNameSettings"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".Activities.NotesList"
+            android:parentActivityName=".NoteActivities.NotesList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
-            android:name=".Activities.ViewNote"
+            android:name=".NoteActivities.ViewNote"
             android:label="@string/title_activity_view_note"
-            android:parentActivityName=".Activities.NotesList"
+            android:parentActivityName=".NoteActivities.NotesList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
-            android:name=".Activities.EditNote"
+            android:name=".NoteActivities.EditNote"
             android:label="@string/title_activity_edit_note"
-            android:parentActivityName=".Activities.ViewNote"
+            android:parentActivityName=".NoteActivities.ViewNote"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.ViewNote" />
+                android:value="com.aura.YoteCompanion.NoteActivities.ViewNote" />
         </activity>
         <activity
-            android:name=".Activities.NotesList"
+            android:name=".NoteActivities.NotesList"
             android:label="Notes"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
             android:name=".Authentication.SignupActivity"
@@ -70,7 +70,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
             android:name=".Authentication.ResetPasswordActivity"
@@ -78,20 +78,24 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
-            android:name=".Activities.SettingsActivity"
+            android:name=".Authentication.SettingsActivity"
             android:label="Settings"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.Activities.NotesList" />
+                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
             android:name=".Authentication.LogoutActivity"
             android:label="@string/title_activity_logout"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Navigation.NavigationActivity"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

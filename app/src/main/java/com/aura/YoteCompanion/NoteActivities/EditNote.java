@@ -1,5 +1,6 @@
-package com.aura.YoteCompanion.Activities;
+package com.aura.YoteCompanion.NoteActivities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,29 +11,36 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.aura.YoteCompanion.R;
+import com.aura.YoteCompanion.Models.Note;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.aura.YoteCompanion.models.Note;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddNotes extends AppCompatActivity {
+import static com.aura.YoteCompanion.NoteActivities.AddNotes.PREFS_NAME;
 
-    public static final String PREFS_NAME = "UsernameFile";
-    private String userID;
-   // private FirebaseAuth auth;
+public class EditNote extends AppCompatActivity {
+    private EditText txt_title;
+    private EditText txt_details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //
-        setContentView(R.layout.activity_add_notes);
+        setContentView(R.layout.activity_edit_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //
+        txt_details = (EditText) findViewById(R.id.txt_note_details) ;
+        txt_title = (EditText) findViewById(R.id.txt_note_title);
+        //
+        Intent intent = getIntent();
+        final Note note = (Note) intent.getSerializableExtra("Note");
+        //
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +52,7 @@ public class AddNotes extends AppCompatActivity {
                     //
                     String title = txt_note_title.getText().toString();
                     if (title.matches("")) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddNotes.this)
+                        AlertDialog.Builder builder = new AlertDialog.Builder(EditNote.this)
                                 .setMessage("You have not entered a Fire Note title")
                                 .setCancelable(false)
                                 .setPositiveButton("OK", null);
@@ -76,7 +84,7 @@ public class AddNotes extends AppCompatActivity {
                         //userRef.child("Users").child(userID);
 
                         String key = userRef.push().getKey();
-                        Map <String,Object> childUpdates = new HashMap<>();
+                        Map<String,Object> childUpdates = new HashMap<>();
                         childUpdates.put(key, note.toMap());
 
                         //childUpdates.put(key, note.userNotes());
@@ -103,8 +111,10 @@ public class AddNotes extends AppCompatActivity {
                 }
             });
         }
-        //Back button on toolbar
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //
+        txt_title.setText(note.getTitle());
+        txt_details.setText(note.getDetails());
     }
 
 }

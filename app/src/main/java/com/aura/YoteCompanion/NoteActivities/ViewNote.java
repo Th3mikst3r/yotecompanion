@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.Activities;
+package com.aura.YoteCompanion.NoteActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aura.YoteCompanion.R;
-import com.aura.YoteCompanion.models.Note;
+import com.aura.YoteCompanion.Models.Note;
 
 public class ViewNote extends AppCompatActivity {
     private TextView lbl_title;

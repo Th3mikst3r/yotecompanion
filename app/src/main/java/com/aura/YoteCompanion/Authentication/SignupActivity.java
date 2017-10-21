@@ -11,9 +11,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.aura.YoteCompanion.Activities.NotesList;
+import com.aura.YoteCompanion.NoteActivities.NotesList;
 import com.aura.YoteCompanion.R;
-import com.aura.YoteCompanion.models.Note;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

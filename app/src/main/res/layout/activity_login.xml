@@ -34,20 +34,11 @@
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="match_parent"
+            android:layout_width="344dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@android:color/holo_blue_dark"
             android:text="@string/btn_login_email"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/btn_login_gmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@android:color/holo_blue_dark"
-            android:text="@string/btn_login_google"
             android:textColor="@android:color/white" />
 
         <EditText
@@ -65,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:layout_weight="0.05"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:textColor="@android:color/black"
@@ -82,8 +74,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Login Button -->
-
         <LinearLayout
             android:id="@+id/LinearLayout02"
             android:layout_width="wrap_content"
@@ -93,7 +83,7 @@
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_width="123dp"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:background="@null"
                 android:text="@string/btn_link_to_register"
                 android:textColor="@android:color/black"
@@ -108,8 +98,21 @@
                 android:text="@string/btn_forgot_password"
                 android:textColor="@android:color/black" />
 
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_signin_button"
+                android:layout_width="124dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
+
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="signedout"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
