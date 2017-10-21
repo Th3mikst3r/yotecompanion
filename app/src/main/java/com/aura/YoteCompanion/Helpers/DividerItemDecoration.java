@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.helpers;
+package com.aura.YoteCompanion.Helpers;
 
 import android.content.Context;
 import android.content.res.TypedArray;

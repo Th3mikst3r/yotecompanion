@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.helpers;
+package com.aura.YoteCompanion.Helpers;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

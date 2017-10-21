@@ -10,25 +10,24 @@
             android:icon="@drawable/ic_menu_camera"-->
 
         <item
-            android:id="@+id/nav_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_reminders"
+            android:title="Reminders" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_stub"
+            android:title="Stub..." />
     </group>
 
     <item android:title="Management">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:title="Share" />
+                android:id="@+id/nav_settings"
+                android:title="Settings" />
             <item
-                android:id="@+id/nav_send"
-                android:title="Send" />
+                android:id="@+id/nav_about"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout" />
         </menu>
     </item>
-
 </menu>

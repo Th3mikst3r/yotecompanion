@@ -13,7 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.aura.YoteCompanion.Fragments.HomeFragment;
+import com.aura.YoteCompanion.Fragments.LogoutFragment;
 import com.aura.YoteCompanion.Fragments.NoteFragment;
+import com.aura.YoteCompanion.Fragments.RemindersFragment;
+import com.aura.YoteCompanion.Fragments.SettingsFragment;
 import com.aura.YoteCompanion.R;
 
 public class NavigationActivity extends AppCompatActivity
@@ -27,7 +31,8 @@ public class NavigationActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Set the fragment initially
-        NoteFragment fragment = new NoteFragment();
+        HomeFragment fragment = new HomeFragment();
+        setTitle("Home");
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
 
@@ -81,16 +86,25 @@ public class NavigationActivity extends AppCompatActivity
             NoteFragment fragment= new NoteFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_reminders) {
+            setTitle("Reminders");
+            RemindersFragment fragment= new RemindersFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
+        } else if (id == R.id.nav_stub) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_settings) {
+            setTitle("Settings");
+            SettingsFragment fragment= new SettingsFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            setTitle("Logout");
+            LogoutFragment fragment= new LogoutFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
