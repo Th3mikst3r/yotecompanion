@@ -30,15 +30,6 @@
                 android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
-            android:name=".Authentication.UserNameSettings"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".NoteActivities.NotesList"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
-        </activity>
-        <activity
             android:name=".NoteActivities.ViewNote"
             android:label="@string/title_activity_view_note"
             android:parentActivityName=".NoteActivities.NotesList"

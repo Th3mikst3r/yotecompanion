@@ -71,7 +71,6 @@ public class NavigationActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -91,7 +90,7 @@ public class NavigationActivity extends AppCompatActivity
             RemindersFragment fragment= new RemindersFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
-        } else if (id == R.id.nav_stub) {
+        } else if (id == R.id.nav_habits) {
 
         } else if (id == R.id.nav_settings) {
             setTitle("Settings");
