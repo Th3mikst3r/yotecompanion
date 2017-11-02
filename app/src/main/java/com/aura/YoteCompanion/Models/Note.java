@@ -13,24 +13,15 @@ public class Note implements Serializable {
     private String NoteId;
     private String Title;
     private String Details;
-    private Date SavedAt;
-    private boolean IsStarred;
+    private Date DateSaved;
+   //private String uid;
 
-
-    public boolean isStarred() {
-        return IsStarred;
-    }
-
-    public void setStarred(boolean starred) {
-        IsStarred = starred;
-    }
-
-    public String getNoteId() {
-        return NoteId;
-    }
 
     public void setNoteId(String noteId) {
         NoteId = noteId;
+    }
+    public String getNoteId() {
+        return NoteId;
     }
 
     public String getTitle() {
@@ -49,39 +40,40 @@ public class Note implements Serializable {
         Details = details;
     }
 
-    public Date getSavedAt() {
-        return SavedAt;
+    public Date getDateSaved() {
+        return DateSaved;
     }
 
-    public void setSavedAt(Date savedAt) {
-        SavedAt = savedAt;
+    public void setDateSaved(Date dateSaved) {
+        DateSaved = dateSaved;
     }
 
-    public Note() {
-        //Constructor
+    public Note() {//Constructor
     }
 
-    public Note(String title, String details, String date, boolean isStarred) {
+    public Note(String title, String details, String date) {
+        //this.setNoteId(noteId);
+        //this.uid = uid;
         this.setTitle(title);
         this.setDetails(details);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zzz");
         try {
-            this.setSavedAt(sdf.parse(date));
+            this.setDateSaved(sdf.parse(date));
         }
         catch (ParseException | NullPointerException e){
-            this.setSavedAt(new Date());
+            this.setDateSaved(new Date());
         }
-        this.setStarred(isStarred);
     }
 
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        //result.put("uid", uid);
+        //result.put("uid" , uid);
+        //result.put("noteId" , getNoteId());
         result.put("title", getTitle());
         result.put("details", getDetails());
-        result.put("savedAt", getSavedAt().toString());
-        result.put("isStarred", isStarred());
+        result.put("dateSaved", getDateSaved().toString());
         return result;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.aura.YoteCompanion.NoteActivities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -11,18 +11,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.aura.YoteCompanion.R;
 import com.aura.YoteCompanion.Models.Note;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.aura.YoteCompanion.NoteActivities.AddNotes.PREFS_NAME;
 
 public class EditNote extends AppCompatActivity {
     private EditText txt_title;
@@ -39,7 +38,7 @@ public class EditNote extends AppCompatActivity {
         txt_title = (EditText) findViewById(R.id.txt_note_title);
         //
         Intent intent = getIntent();
-        final Note note = (Note) intent.getSerializableExtra("Note");
+        Note note = (Note) intent.getSerializableExtra("Note");
         //
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
         if (fab != null) {
@@ -53,44 +52,32 @@ public class EditNote extends AppCompatActivity {
                     String title = txt_note_title.getText().toString();
                     if (title.matches("")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(EditNote.this)
-                                .setMessage("You have not entered a Fire Note title")
+                                .setMessage("You have not entered a title")
                                 .setCancelable(false)
                                 .setPositiveButton("OK", null);
                         AlertDialog ad = builder.create();
-                        ad.setTitle("Incomplete Info");
-                        ad.show();
+                        ad.setTitle("Incomplete Info"); ad.show();
                     } else {
                         prg_saving.setIndeterminate(true);
                         prg_saving.setVisibility(View.VISIBLE);
                         txt_note_details.setEnabled(false);
                         txt_note_title.setEnabled(false);
-                        //
+
                         final Note note = new Note();
                         note.setDetails(txt_note_details.getText().toString());
                         note.setTitle(txt_note_title.getText().toString());
-                        note.setSavedAt(new Date());
-                        note.setStarred(false);
-                        //
-                        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        note.setDateSaved(new Date());
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        // Assuming that the user is logged in
-                        DatabaseReference usersRef = database.getReference("Users");
-                        //
-                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                        String username = settings.getString("Username","");
-                        //
-                        DatabaseReference userRef = usersRef.child(username);
-                        //userRef.child("Users").child(userID);
 
-                        String key = userRef.push().getKey();
+                        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+                        DatabaseReference notesRef = database.getReference("/user-notes/" + currUser + "/");
+
+                        String key = notesRef.push().getKey();
                         Map<String,Object> childUpdates = new HashMap<>();
                         childUpdates.put(key, note.toMap());
 
-                        //childUpdates.put(key, note.userNotes());
-                        //userRef.child("users").child(username).setValue(childUpdates);
-
-                        userRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                        notesRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                 if(databaseError == null) {

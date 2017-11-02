@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.aura.YoteCompanion.Authentication.LoginActivity">
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="30dp"
@@ -16,9 +16,10 @@
         android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/white"
+        android:layout_height="666dp"
+        android:background="@color/colorBackGroundMain"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin"
@@ -34,18 +35,19 @@
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="344dp"
+            android:layout_width="456dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/btn_login_bg"
             android:text="@string/btn_login_email"
             android:textColor="@android:color/white" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:layout_weight="0.10"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:textColor="@android:color/black"
@@ -56,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_weight="0.05"
+            android:layout_weight="0.11"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:textColor="@android:color/black"
@@ -74,38 +76,6 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/LinearLayout02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-
-            <Button
-                android:id="@+id/btn_signup"
-                android:layout_width="123dp"
-                android:layout_height="58dp"
-                android:background="@null"
-                android:text="@string/btn_link_to_register"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/btn_reset_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="@string/btn_forgot_password"
-                android:textColor="@android:color/black" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/google_signin_button"
-                android:layout_width="124dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom" />
-
-        </LinearLayout>
-
         <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
@@ -113,6 +83,49 @@
             android:text="signedout"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_signin_button"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"></com.google.android.gms.common.SignInButton>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/BottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/background"
+        android:baselineAligned="false"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="1"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="bottom|center">
+
+        <Button
+            android:id="@+id/btn_reset_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.17"
+            android:background="@null"
+            android:text="@string/btn_forgot_password"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@null"
+            android:text="@string/btn_link_to_register"
+            android:textColor="@android:color/black"
+            android:textSize="15dp" />
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

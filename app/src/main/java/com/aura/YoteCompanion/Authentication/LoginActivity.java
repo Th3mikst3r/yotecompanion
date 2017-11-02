@@ -11,10 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aura.YoteCompanion.Navigation.NavigationActivity;
+import com.aura.YoteCompanion.HomeActivity;
 import com.aura.YoteCompanion.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-
 /**
  * Created by michael Hanson on 10/21/2017.
  */
@@ -38,11 +36,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;  //Google sign in func
     private ProgressBar progressBar;
-    private Button btnSignup, btnLoginEmail, btnReset, btnLoginGoogle;
+    private Button btnSignup, btnLoginEmail, btnReset;
 
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
-    private TextView mStatusTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +51,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         //If User is logged in navigate to the navigation menu (profile)
         if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
-
         // set the view now
         setContentView(R.layout.activity_login);
 
@@ -71,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnLoginEmail = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         SignInButton gsignInButton = (SignInButton) findViewById(R.id.google_signin_button); //sign in button
-        mStatusTextView = (TextView) findViewById(R.id.status);
 
         //Sets fields invisible
         inputEmail.setVisibility(View.GONE);
@@ -80,13 +75,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Get Firebase auth instance
         mAuth = FirebaseAuth.getInstance();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN) .requestEmail().build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this) .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
         gsignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,24 +118,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
                 progressBar.setVisibility(View.VISIBLE);
 
-                //authenticate user
+                //Email and password authentication
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
-                                    // there was an error
                                     if (password.length() < 6) {
                                         inputPassword.setError(getString(R.string.minimum_password));
                                     } else {
                                         Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -172,32 +159,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
+            // Signed in successfully
             GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
-            updateUI(true);
-            Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
+            Toast.makeText(this, "Hello " + acct.getDisplayName(), Toast.LENGTH_SHORT).show();
+            //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         } else {
-            // Signed out, show unauthenticated UI.
-            updateUI(false);
+            //signOut();
         }
     }
-    private void updateUI(boolean signedIn) {
-        if (signedIn) {
-            findViewById(R.id.google_signin_button).setVisibility(View.GONE);
-            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-        } else {
-            //mStatusTextView.setText(R.string.signed_out);
-            findViewById(R.id.google_signin_button).setVisibility(View.VISIBLE);
-            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-        }
-    }
+
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
-    }
+   /* public void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        Toast.makeText(LoginActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }*/
 }
 

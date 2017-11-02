@@ -10,7 +10,7 @@
     android:paddingTop="7dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.aura.YoteCompanion.NoteActivities.NotesList"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_noteslist">
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

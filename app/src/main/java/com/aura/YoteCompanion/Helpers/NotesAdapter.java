@@ -43,7 +43,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         holder.title.setText(note.getTitle().toUpperCase());
         holder.details.setText(note.getDetails());
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        String reportDate = df.format(note.getSavedAt());
+        String reportDate = df.format(note.getDateSaved());
         holder.date.setText(reportDate);
     }
 

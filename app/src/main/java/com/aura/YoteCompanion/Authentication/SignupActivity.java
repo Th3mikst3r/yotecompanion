@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.aura.YoteCompanion.HomeActivity;
 import com.aura.YoteCompanion.NoteActivities.NotesList;
 import com.aura.YoteCompanion.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -90,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    startActivity(new Intent(SignupActivity.this, NotesList.class));
+                                    startActivity(new Intent(SignupActivity.this, HomeActivity.class));
                                     finish();
                                 }
                             }

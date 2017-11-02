@@ -84,9 +84,20 @@
             android:label="@string/title_activity_logout"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Navigation.NavigationActivity"
-            android:label="@string/title_activity_navigation"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".SettingsActivites.SetTest"
+            android:label="@string/title_activity_settings_new" />
+        <activity
+            android:name=".HomeActivity"
+            android:label="TEST" />
+
+        <!-- [START firebase_service] -->
+        <service
+            android:name=".Helpers.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

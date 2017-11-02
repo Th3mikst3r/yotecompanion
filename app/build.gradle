@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "mhanson.yotecompanion"
@@ -10,6 +10,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -20,22 +21,25 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.google.firebase:firebase-auth:11.4.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.firebase:firebase-database:11.4.2'
     compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile 'com.google.android.gms:play-services-auth:11.4.2'
+    compile 'com.android.support:support-vector-drawable:25.3.1'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
+    //compile 'com.google.firebase:firebase-firestore:11.4.2'
+
+    compile 'com.google.firebase:firebase-core:11.4.2'  //For Cloud messaging
+    compile 'com.google.firebase:firebase-messaging:11.4.2' //For Cloud messaging
+
     testCompile 'junit:junit:4.12'
 }
-
-
-
 
 
 apply plugin: 'com.google.gms.google-services'

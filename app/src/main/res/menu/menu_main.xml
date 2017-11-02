@@ -1,26 +1,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aura.YoteCompanion.NoteActivities.NotesList">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="2"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_refresh"
-        android:orderInCategory="1"
-        android:title="Refresh"
-        app:showAsAction="never" />
-    <!--item
-        android:id="@+id/action_delete_all_notes"
-        android:orderInCategory="4"
-        android:title="Delete All Notes"
-        app:showAsAction="never" /-->
 
-    <item
-        android:id="@+id/action_log_out"
-        android:orderInCategory="100"
-        android:title="@string/action_log_out"
-        app:showAsAction="never" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_notes"
+            android:title="Notes"
+            />
+        <item
+            android:id="@+id/action_home"
+            android:title="Home"
+            />
+        <!--android:icon="@drawable/ic_menu_camera"-->
+        <item
+            android:id="@+id/action_habits"
+            android:title="Habits" />
+    </group>
+
+    <item android:title="Management">
+        <menu>
+            <item
+                android:id="@+id/action_refresh"
+                android:title="Refresh" />
+            <item
+                android:id="@+id/action_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/action_about"
+                android:title="About" />
+            <item
+                android:id="@+id/action_logout"
+                android:title="Logout" />
+        </menu>
+    </item>
 </menu>

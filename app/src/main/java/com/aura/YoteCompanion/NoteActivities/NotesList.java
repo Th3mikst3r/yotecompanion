@@ -3,7 +3,6 @@ package com.aura.YoteCompanion.NoteActivities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -17,9 +16,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.LogoutActivity;
-import com.aura.YoteCompanion.Authentication.SettingsActivity;
+import com.aura.YoteCompanion.HomeActivity;
+import com.aura.YoteCompanion.SettingsActivites.SetTest;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,43 +33,26 @@ import com.aura.YoteCompanion.Helpers.DividerItemDecoration;
 import com.aura.YoteCompanion.Models.Note;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import com.aura.YoteCompanion.R;
 
 public class NotesList extends AppCompatActivity {
     private List<Note> notesList  = new ArrayList<>();
-    public static final String PREFS_NAME = "UsernameFile";
-    private RecyclerView lst_notes;
+    private RecyclerView lstNotes;
     private NotesAdapter nAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_noteslist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //
-        //This is the back button on the action bar
-        // See method  onOptionsItemSelected
+        //ActionBar
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        String username = settings.getString("Username","");
-        //
-        if(username.matches("")) {
-            username = UUID.randomUUID().toString();
-            //
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("Username", username);
-            editor.commit();
-        }
-        //
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,85 +61,88 @@ public class NotesList extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //
-        lst_notes = (RecyclerView) findViewById(R.id.lst_notes);
-        //
+        lstNotes = (RecyclerView) findViewById(R.id.lst_notes);
         nAdapter = new NotesAdapter(notesList);
-        //
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        lst_notes.setLayoutManager(layoutManager);
-        lst_notes.setItemAnimator(new DefaultItemAnimator());
-        lst_notes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        lst_notes.setAdapter(nAdapter);
-        //
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference usersRef = database.getReference("Users");
-        //
-        final DatabaseReference userRef = usersRef.child(username);
-        //
-        userRef.addChildEventListener(new ChildEventListener() {
+        lstNotes.setLayoutManager(layoutManager);
+        lstNotes.setItemAnimator(new DefaultItemAnimator());
+        lstNotes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        lstNotes.setAdapter(nAdapter);
+
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+        final DatabaseReference notesRef = database.getReference("/user-notes/" + currUser + "/");
+
+        notesRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.getValue() != null) {
                     String title = dataSnapshot.child("title").getValue().toString();
                     String details = (String) dataSnapshot.child("details").getValue();
-                    String date = (String) dataSnapshot.child("savedAt").getValue();
-                    boolean isSaved = (boolean) dataSnapshot.child("isStarred").getValue();
-                    //
-                    Note note = new Note(title, details, date, isSaved);
-                    note.setNoteId(dataSnapshot.getKey());
+                    String date = (String) dataSnapshot.child("dateSaved").getValue();
+                    Note note = new Note(title, details, date);
                     notesList.add(note);
                     nAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    notesRef.getRef().removeValue();
+                }
             }
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
         //
-        lst_notes.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lst_notes, new ClickListener() {
+        lstNotes.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lstNotes, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Note note = notesList.get(position);
-                //
                 Intent intent = new Intent(getApplicationContext(), ViewNote.class);
                 intent.putExtra("Note", note);
                 startActivity(intent);
             }
 
             @Override
-            public void onLongClick(View view, int position) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(NotesList.this);
+            public void onLongClick(View view, final int position) {
+                final AlertDialog.Builder alert = new AlertDialog.Builder(NotesList.this);
                 alert.setMessage("Delete the note? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                userRef.getRef().removeValue();
+                                try {
+                                    notesList.remove(position);
+                                    nAdapter.notifyDataSetChanged();
+                                    Toast.makeText(NotesList.this, "Note Delete", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         })
                         .setNegativeButton("Cancel" , null);
                 AlertDialog alertDialog = alert.create();
                 alertDialog.show();
-                //Intent intent = new Intent(getApplicationContext(), ViewNote.class);
-               // startActivity(intent);
             }
         }));
+
+
+        //Toast.makeText(this, "Total number of notes " + "",+ Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -161,20 +150,27 @@ public class NotesList extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_notes:
+                Intent notes = new Intent(getApplicationContext(), NotesList.class);
+                startActivity(notes);
+                break;
+            case R.id.action_habits:
+                //Intent hab = new Intent(getApplicationContext(), HabitsActivity.class);
+                //startActivity(hab);
+                break;
             case R.id.action_refresh:
                 Intent refresh = new Intent(getApplicationContext(), NotesList.class);
                 startActivity(refresh);
                 break;
+            case R.id.action_home:
+                Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(home);
+                break;
             case R.id.action_settings:
-                Intent settings = new Intent(getApplicationContext(), SettingsActivity.class);
+                Intent settings = new Intent(getApplicationContext(), SetTest.class);
                 startActivity(settings);
                 break;
-            /*case R.id.action_delete_all_notes:
-                Intent intent4 = new Intent(getApplicationContext(), DeleteAllNotes.class);
-                startActivity(intent4);
-                break;
-             */
-            case R.id.action_log_out:
+            case R.id.action_logout:
                 Intent log_out = new Intent(getApplicationContext(), LogoutActivity.class);
                 startActivity(log_out);
                 break;
@@ -187,7 +183,6 @@ public class NotesList extends AppCompatActivity {
 
     public interface ClickListener {
         void onClick(View view, int position);
-
         void onLongClick(View view, int position);
     }
 
@@ -213,7 +208,6 @@ public class NotesList extends AppCompatActivity {
                 }
             });
         }
-
         @Override
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
@@ -223,14 +217,11 @@ public class NotesList extends AppCompatActivity {
             }
             return false;
         }
-
         @Override
         public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         }
-
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
         }
     }
 }

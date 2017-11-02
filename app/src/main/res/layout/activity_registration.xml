@@ -5,12 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.aura.YoteCompanion.Authentication.LoginActivity">>
+    tools:context="com.aura.YoteCompanion.Authentication.LoginActivity"><![CDATA[>
+
+    ]]>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/white"
+        android:layout_height="413dp"
+        android:background="@color/colorBackGroundMain"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
@@ -49,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
                 android:hint="@string/hint_password"
-                android:imeActionId="@+id/login"
+
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
@@ -64,42 +66,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/btn_login_bg"
             android:text="@string/action_sign_in_short"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
         <!-- Link to Login Screen -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/sign_in_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="@string/btn_link_to_login"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/btn_reset_password"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="@string/btn_forgot_password"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black" />
-
-        </LinearLayout>
 
 
     </LinearLayout>
@@ -111,4 +83,35 @@
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="@string/btn_link_to_login"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textSize="15dp" />
+
+        <Button
+            android:id="@+id/btn_reset_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="@string/btn_forgot_password"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

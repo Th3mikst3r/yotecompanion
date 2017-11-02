@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
- * Created by michael Hanson on 4/8/2017.
+ * Created by michael Hanson on 10/29/17.
  */
 public class ResetPasswordActivity extends AppCompatActivity {
 

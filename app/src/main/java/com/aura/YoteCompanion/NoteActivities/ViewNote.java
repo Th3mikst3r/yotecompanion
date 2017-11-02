@@ -43,6 +43,6 @@ public class ViewNote extends AppCompatActivity {
         //
         lbl_title.setText(note.getTitle());
         lbl_details.setText(note.getDetails());
-        lbl_saved_at.setText(note.getSavedAt().toString());
+        lbl_saved_at.setText(note.getDateSaved().toString());
     }
 }
