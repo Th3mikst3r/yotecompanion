@@ -53,7 +53,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SettingsActivity.this, SignInActivity.class));
                     finish();
                 }
             }

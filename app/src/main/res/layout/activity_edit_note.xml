@@ -21,10 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_edit_note"
-        android:layout_width="385dp"
-        tools:layout_editor_absoluteX="-1dp" />
+    <include layout="@layout/content_edit_note" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_save"

@@ -1,12 +1,10 @@
 package com.aura.YoteCompanion;
 
 
-import com.aura.YoteCompanion.Authentication.LogoutActivity;
-import com.aura.YoteCompanion.NoteActivities.NotesList;
-import com.aura.YoteCompanion.SettingsActivites.SetTest;
-import com.getbase.floatingactionbutton.FloatingActionButton;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,23 +13,55 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HomeActivity extends AppCompatActivity {
+import com.aura.YoteCompanion.Authentication.SignInActivity;
+import com.aura.YoteCompanion.NoteActivities.NotesList;
+import com.aura.YoteCompanion.SettingsActivites.SetTest;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-    private TextView numOfNotes;
+public class HomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private TextView userloggedin;
+    private GoogleApiClient mGoogleApiClient;
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-       // numOfNotes = (TextView) findViewById(R.id.txtview_numOfNotes);
-        //lstView.getAdapter().getCount() ,
-       // numOfNotes.setText();
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        /*If user is not logged in, Start the SignInAcitivity*/
+        if(mFirebaseUser == null){
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API).build();
+
+        /*Displays the logged in user by grabbing the Firebase auth from SignInActivity*/
+        userloggedin = (TextView) findViewById(R.id.currloggedinuser);
+        Bundle extras = getIntent().getExtras();
+        userloggedin.setText("Welcome");
+        if(extras!=null){
+            userloggedin.setText("Welcome "+extras.getString("UserName"));
+        }
 
         final FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_reminder);
         actionA.setTitle("Habits");
@@ -82,7 +112,11 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(settings);
                 break;
             case R.id.action_logout:
-                Intent log_out = new Intent(getApplicationContext(), LogoutActivity.class);
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                mFirebaseUser = null;
+                //mUsername = ANONYMOUS;
+                Intent log_out = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(log_out);
                 break;
             default:
@@ -92,4 +126,8 @@ public class HomeActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

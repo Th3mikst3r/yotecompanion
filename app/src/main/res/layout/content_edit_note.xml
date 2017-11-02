@@ -46,11 +46,14 @@
         <EditText
             android:id="@+id/txt_note_details"
             android:layout_width="match_parent"
-            android:layout_height="307dp"
+            android:layout_height="315dp"
             android:layout_marginBottom="100dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.05"
-            android:inputType="textMultiLine|textAutoCorrect" />
+            android:gravity="top|left"
+            android:inputType="textMultiLine|textAutoCorrect"
+            android:isScrollContainer="false"
+            android:scrollbars="vertical" />
 
         <ProgressBar
             android:id="@+id/prg_saving"

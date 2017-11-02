@@ -10,19 +10,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Note implements Serializable {
-    private String NoteId;
+    //private String uid;
     private String Title;
     private String Details;
     private Date DateSaved;
-   //private String uid;
 
+    /*public String getUid() {
+        return uid;
+    }
 
-    public void setNoteId(String noteId) {
-        NoteId = noteId;
-    }
-    public String getNoteId() {
-        return NoteId;
-    }
+    public void setUid(String uid) {
+        this.uid = uid;
+    }*/
 
     public String getTitle() {
         return Title;
@@ -52,7 +51,6 @@ public class Note implements Serializable {
     }
 
     public Note(String title, String details, String date) {
-        //this.setNoteId(noteId);
         //this.uid = uid;
         this.setTitle(title);
         this.setDetails(details);
@@ -68,7 +66,7 @@ public class Note implements Serializable {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        //result.put("uid" , uid);
+        //result.put("uid", uid);
         //result.put("noteId" , getNoteId());
         result.put("title", getTitle());
         result.put("details", getDetails());

@@ -1,5 +1,6 @@
 package com.aura.YoteCompanion.NoteActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.aura.YoteCompanion.Authentication.SignInActivity;
 import com.aura.YoteCompanion.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +27,9 @@ import java.util.Map;
 public class AddNotes extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private String mUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,17 @@ public class AddNotes extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if (mFirebaseUser == null) {
+            // Not signed in, launch the Sign In activity
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        } else {
+            mUsername = mFirebaseUser.getDisplayName();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
         if (fab != null) {
@@ -58,26 +75,21 @@ public class AddNotes extends AppCompatActivity {
                         txt_note_details.setEnabled(false);
                         txt_note_title.setEnabled(false);
 
+                        String key = mDatabase.child("notes").push().getKey();
                         Note note = new Note();
+
                         note.setDetails(txt_note_details.getText().toString());
                         note.setTitle(txt_note_title.getText().toString());
                         note.setDateSaved(new Date());
-
-                        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                        String key = mDatabase.child("notes").push().getKey();
                         Map<String, Object> noteValues = note.toMap();
+
                         Map<String, Object> childUpdates = new HashMap<>();
-
-                        childUpdates.put("/user-notes/" + currUser + "/" + key, noteValues);
-
+                        childUpdates.put("/Users/" + mFirebaseUser.getUid() + "/" + key, noteValues);
                         mDatabase.updateChildren(childUpdates);
-
 
                         mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
                                 if(databaseError == null) {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_LONG);
                                     toast.show();
