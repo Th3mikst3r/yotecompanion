@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
+import com.aura.YoteCompanion.HabitActivites.HabitList;
 import com.aura.YoteCompanion.NoteActivities.NotesList;
 import com.aura.YoteCompanion.SettingsActivites.SetTest;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -68,7 +68,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
         actionA.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Habits Was clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), HabitList.class);
+                startActivity(intent);
             }
         });
         final FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_notes);
@@ -96,8 +97,8 @@ public class HomeActivity extends AppCompatActivity implements GoogleApiClient.O
                 startActivity(notes);
                 break;
             case R.id.action_habits:
-                //Intent hab = new Intent(getApplicationContext(), HabitsActivity.class);
-                //startActivity(hab);
+                Intent hab = new Intent(getApplicationContext(), HabitList.class);
+                startActivity(hab);
                 break;
             case R.id.action_refresh:
                 Intent refresh = new Intent(getApplicationContext(), NotesList.class);

@@ -37,7 +37,6 @@ dependencies {
 
     compile 'com.google.firebase:firebase-core:11.4.2'  //For Cloud messaging
     compile 'com.google.firebase:firebase-messaging:11.4.2' //For Cloud messaging
-
     testCompile 'junit:junit:4.12'
 }
 

@@ -61,9 +61,8 @@ public class AddNotes extends AppCompatActivity {
                     EditText txt_note_title = (EditText) findViewById(R.id.txt_note_title);
                     EditText txt_note_details = (EditText) findViewById(R.id.txt_note_details);
 
-                    String title = txt_note_title.getText().toString();
-                    //Basic error handling for fields
-                    if (title.matches("")) {
+                    //Error handling for fields
+                    if (txt_note_title.getText().toString().matches("")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(AddNotes.this)
                                 .setMessage("You have not entered a title")
                                 .setCancelable(false).setPositiveButton("OK", null);
@@ -84,6 +83,7 @@ public class AddNotes extends AppCompatActivity {
                         Map<String, Object> noteValues = note.toMap();
 
                         Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put("/notes/" + key, noteValues);
                         childUpdates.put("/Users/" + mFirebaseUser.getUid() + "/" + key, noteValues);
                         mDatabase.updateChildren(childUpdates);
 

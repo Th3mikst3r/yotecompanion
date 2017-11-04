@@ -85,7 +85,15 @@
         <activity
             android:name=".HomeActivity"
             android:label="TEST" />
+        <activity
+            android:name=".HabitActivites.HabitList"
+            android:label="Habits!"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".HabitActivites.AddHabit"
+            android:label="Add A Habit!"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <!-- [START firebase_service] -->
         <service
             android:name=".Helpers.MyFirebaseInstanceIDService">

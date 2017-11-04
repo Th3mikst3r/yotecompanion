@@ -26,6 +26,7 @@
         android:id="@+id/lbl_note_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
         android:layout_marginTop="5dp"
         android:labelFor="@id/txt_note_title"
         android:textSize="16sp"
@@ -47,6 +48,7 @@
         android:id="@+id/lbl_note_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
         android:textSize="15sp"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/lbl_fire_note_details"/>

@@ -1,4 +1,4 @@
-package com.aura.YoteCompanion.NoteActivities;
+package com.aura.YoteCompanion.HabitActivites;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,11 +19,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
-import com.aura.YoteCompanion.HabitActivites.HabitList;
 import com.aura.YoteCompanion.Helpers.DividerItemDecoration;
-import com.aura.YoteCompanion.Helpers.NotesAdapter;
+import com.aura.YoteCompanion.Helpers.HabitAdapter;
 import com.aura.YoteCompanion.HomeActivity;
-import com.aura.YoteCompanion.Models.Note;
+import com.aura.YoteCompanion.Models.Habit;
+import com.aura.YoteCompanion.NoteActivities.NotesList;
 import com.aura.YoteCompanion.R;
 import com.aura.YoteCompanion.SettingsActivites.SetTest;
 import com.google.android.gms.auth.api.Auth;
@@ -41,23 +40,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesList extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    private List<Note> notesList  = new ArrayList<>();
+/**
+ * Created by Michael Hanson on 10/10/2016.
+ */
 
-    private RecyclerView lstNotes;
-    private NotesAdapter nAdapter;
+public class HabitList extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
+    private List<Habit> habitList  = new ArrayList<>();
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    public static final String ANONYMOUS = "anonymous";
-    private String mUsername;
     private GoogleApiClient mGoogleApiClient;
-    private DatabaseReference notesRef;
+    private DatabaseReference habitRef;
+
+    private RecyclerView lstHabit;
+    private HabitAdapter hAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_noteslist);
+        setContentView(R.layout.activity_habitlist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //ActionBar
@@ -68,56 +70,53 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
+                .addApi(Auth.GOOGLE_SIGN_IN_API).build();
 
-        mUsername = ANONYMOUS;
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
-
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
         } else {
-            mUsername = mFirebaseUser.getDisplayName();
+            String mUsername = mFirebaseUser.getDisplayName();
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddNotes.class);
+                Intent intent = new Intent(getApplicationContext(), AddHabit.class);
                 startActivity(intent);
             }
         });
-        lstNotes = (RecyclerView) findViewById(R.id.lst_notes);
-        nAdapter = new NotesAdapter(notesList);
+
+        lstHabit = (RecyclerView) findViewById(R.id.lst_habit);
+        hAdapter = new HabitAdapter(habitList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        lstNotes.setLayoutManager(layoutManager);
-        lstNotes.setItemAnimator(new DefaultItemAnimator());
-        lstNotes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        lstNotes.setAdapter(nAdapter);
-
+        lstHabit.setLayoutManager(layoutManager);
+        lstHabit.setItemAnimator(new DefaultItemAnimator());
+        lstHabit.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        lstHabit.setAdapter(hAdapter);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        notesRef = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
+        habitRef = database.getReference("/habits/" + mFirebaseUser.getUid() + "/");
 
-        notesRef.addChildEventListener(new ChildEventListener() {
+        habitRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.getValue() != null) {
                     //String uid = dataSnapshot.getValue();
-                    String title = dataSnapshot.child("title").getValue().toString();
-                    String details = (String) dataSnapshot.child("details").getValue();
-                    String date = (String) dataSnapshot.child("dateSaved").getValue();
-                    Note note = new Note(title, details, date);
-                    notesList.add(note);
-                    nAdapter.notifyDataSetChanged();
+                    String habitName = dataSnapshot.child("habitName").getValue().toString();
+                    String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
+                    String date = dataSnapshot.child("date").getValue().toString();
+                    String time = dataSnapshot.child("time").getValue().toString();
+                    Habit habit = new Habit(habitName, numOfTimes, date, time);
+                    habitList.add(habit);
+                    hAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -125,9 +124,6 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                /*if (!dataSnapshot.exists()) {
-                    notesRef.getRef().removeValue();
-                }*/
             }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -136,33 +132,33 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
         });
 
         //
-        lstNotes.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lstNotes, new ClickListener() {
+        lstHabit.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lstHabit, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Note note = notesList.get(position);
-                Intent intent = new Intent(getApplicationContext(), ViewNote.class);
+                /*Habit habit = HabitList.get(position);
+                Intent intent = new Intent(getApplicationContext(), ViewHabit.class);
                 intent.putExtra("Note", note);
-                startActivity(intent);
+                startActivity(intent);*/
+                Toast.makeText(HabitList.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onLongClick(View view, final int position) {
-                final AlertDialog.Builder alert = new AlertDialog.Builder(NotesList.this);
-                alert.setMessage("Delete the note? ")
+                final android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(HabitList.this);
+                alert.setMessage("Delete the Habit? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    notesList.remove(position);
-                                    nAdapter.notifyDataSetChanged();
-                                    Toast.makeText(NotesList.this, "Note Delete", Toast.LENGTH_SHORT).show();
+                                    habitList.remove(position);
+                                    hAdapter.notifyDataSetChanged();
+                                    Toast.makeText(HabitList.this, "Habit Delete", Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                         })
                         .setNegativeButton("Cancel" , null);
-                AlertDialog alertDialog = alert.create();
+                android.support.v7.app.AlertDialog alertDialog = alert.create();
                 alertDialog.show();
             }
         }));
@@ -221,13 +217,12 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
         void onClick(View view, int position);
         void onLongClick(View view, int position);
     }
-
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
-        private NotesList.ClickListener clickListener;
+        private HabitList.ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final NotesList.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final HabitList.ClickListener clickListener) {
             this.clickListener = clickListener;
             gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -259,4 +254,5 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         }
     }
+
 }

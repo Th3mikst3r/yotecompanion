@@ -30,6 +30,7 @@
                 android:id="@+id/txt_note_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corner"
                 android:layout_marginTop="5dp"
                 android:gravity="bottom"
                 android:inputType="text"
@@ -51,6 +52,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="0.05"
                 android:gravity="top|left"
+                android:background="@drawable/rounded_corner"
                 android:inputType="textMultiLine|textAutoCorrect"
                 android:isScrollContainer="false"
                 android:scrollbars="vertical" />

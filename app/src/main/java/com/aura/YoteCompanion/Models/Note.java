@@ -10,18 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Note implements Serializable {
-    //private String uid;
     private String Title;
     private String Details;
     private Date DateSaved;
-
-    /*public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }*/
 
     public String getTitle() {
         return Title;
@@ -51,7 +42,6 @@ public class Note implements Serializable {
     }
 
     public Note(String title, String details, String date) {
-        //this.uid = uid;
         this.setTitle(title);
         this.setDetails(details);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zzz");
@@ -66,8 +56,6 @@ public class Note implements Serializable {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        //result.put("uid", uid);
-        //result.put("noteId" , getNoteId());
         result.put("title", getTitle());
         result.put("details", getDetails());
         result.put("dateSaved", getDateSaved().toString());
