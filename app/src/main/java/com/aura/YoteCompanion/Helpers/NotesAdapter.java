@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.aura.YoteCompanion.R;
+
 import com.aura.YoteCompanion.Models.Note;
+import com.aura.YoteCompanion.R;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -34,7 +36,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_list_row, parent, false);
         return  new MyViewHolder(itemView);
     }
-
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);

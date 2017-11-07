@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +22,7 @@ import android.widget.Toast;
 import com.aura.YoteCompanion.Authentication.SignInActivity;
 import com.aura.YoteCompanion.Helpers.DividerItemDecoration;
 import com.aura.YoteCompanion.Helpers.HabitAdapter;
-import com.aura.YoteCompanion.HomeActivity;
 import com.aura.YoteCompanion.Models.Habit;
-import com.aura.YoteCompanion.NoteActivities.NotesList;
 import com.aura.YoteCompanion.R;
 import com.aura.YoteCompanion.SettingsActivites.SetTest;
 import com.google.android.gms.auth.api.Auth;
@@ -103,7 +102,7 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
         lstHabit.setAdapter(hAdapter);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        habitRef = database.getReference("/habits/" + mFirebaseUser.getUid() + "/");
+        habitRef = database.getReference("/Habits/" + mFirebaseUser.getUid() + "/");
 
         habitRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -111,10 +110,12 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
                 if(dataSnapshot.getValue() != null) {
                     //String uid = dataSnapshot.getValue();
                     String habitName = dataSnapshot.child("habitName").getValue().toString();
+                    String details = dataSnapshot.child("details").getValue().toString();
                     String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
                     String time = dataSnapshot.child("time").getValue().toString();
-                    Habit habit = new Habit(habitName, numOfTimes, date, time);
+                    boolean isChecked = (boolean) dataSnapshot.child("isChecked").getValue();
+                    Habit habit = new Habit(habitName, details, numOfTimes, date, time, isChecked);
                     habitList.add(habit);
                     hAdapter.notifyDataSetChanged();
                 }
@@ -135,15 +136,15 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
         lstHabit.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lstHabit, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                /*Habit habit = HabitList.get(position);
+                Habit habit = habitList.get(position);
                 Intent intent = new Intent(getApplicationContext(), ViewHabit.class);
-                intent.putExtra("Note", note);
-                startActivity(intent);*/
+                intent.putExtra("Habit", habit);
+                startActivity(intent);
                 Toast.makeText(HabitList.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onLongClick(View view, final int position) {
-                final android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(HabitList.this);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(HabitList.this);
                 alert.setMessage("Delete the Habit? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
@@ -158,7 +159,7 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
                             }
                         })
                         .setNegativeButton("Cancel" , null);
-                android.support.v7.app.AlertDialog alertDialog = alert.create();
+                AlertDialog alertDialog = alert.create();
                 alertDialog.show();
             }
         }));
@@ -173,22 +174,6 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_notes:
-                Intent notes = new Intent(getApplicationContext(), NotesList.class);
-                startActivity(notes);
-                break;
-            case R.id.action_habits:
-                Intent hab = new Intent(getApplicationContext(), HabitList.class);
-                startActivity(hab);
-                break;
-            case R.id.action_refresh:
-                Intent refresh = new Intent(getApplicationContext(), NotesList.class);
-                startActivity(refresh);
-                break;
-            case R.id.action_home:
-                Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(home);
-                break;
             case R.id.action_settings:
                 Intent settings = new Intent(getApplicationContext(), SetTest.class);
                 startActivity(settings);
@@ -255,4 +240,20 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
         }
     }
 
+
+    /*public void onCheckBoxChicked(View view){
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.cb_done);
+        //checkBox.setChecked(!checkBox.isChecked());
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    Toast.makeText(HabitList.this, "Done!", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(HabitList.this, "Not Done", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        });
+    }*/
 }

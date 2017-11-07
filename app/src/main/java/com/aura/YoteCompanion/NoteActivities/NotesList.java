@@ -20,10 +20,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
-import com.aura.YoteCompanion.HabitActivites.HabitList;
 import com.aura.YoteCompanion.Helpers.DividerItemDecoration;
 import com.aura.YoteCompanion.Helpers.NotesAdapter;
-import com.aura.YoteCompanion.HomeActivity;
 import com.aura.YoteCompanion.Models.Note;
 import com.aura.YoteCompanion.R;
 import com.aura.YoteCompanion.SettingsActivites.SetTest;
@@ -111,7 +109,6 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.getValue() != null) {
-                    //String uid = dataSnapshot.getValue();
                     String title = dataSnapshot.child("title").getValue().toString();
                     String details = (String) dataSnapshot.child("details").getValue();
                     String date = (String) dataSnapshot.child("dateSaved").getValue();
@@ -177,22 +174,6 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_notes:
-                Intent notes = new Intent(getApplicationContext(), NotesList.class);
-                startActivity(notes);
-                break;
-            case R.id.action_habits:
-                Intent hab = new Intent(getApplicationContext(), HabitList.class);
-                startActivity(hab);
-                break;
-            case R.id.action_refresh:
-                Intent refresh = new Intent(getApplicationContext(), NotesList.class);
-                startActivity(refresh);
-                break;
-            case R.id.action_home:
-                Intent home = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(home);
-                break;
             case R.id.action_settings:
                 Intent settings = new Intent(getApplicationContext(), SetTest.class);
                 startActivity(settings);

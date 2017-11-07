@@ -25,11 +25,10 @@ public class SetTest extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // load settings fragment
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
-                new MainPreferenceFragment()).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
     }
 
     public static class MainPreferenceFragment extends PreferenceFragment {

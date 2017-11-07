@@ -19,7 +19,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
             super(view);
             name = (TextView) view.findViewById(R.id.lbl_habitName);
             date = (TextView) view.findViewById(R.id.lbl_date);
-            time = (TextView) view.findViewById(R.id.lbl_time);
+            //time = (TextView) view.findViewById(R.id.lbl_time);
             numOfTimes = (TextView) view.findViewById(R.id.lbl_numOfTimes);
         }
     }
@@ -39,7 +39,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         Habit habit = habitList.get(position);
         holder.name.setText(habit.getHabitName().toUpperCase());
         holder.date.setText(habit.getDate());
-        holder.time.setText(habit.getTime());
+        //holder.time.setText(habit.getTime());
         holder.numOfTimes.setText(habit.getNumOfTimes());
     }
 

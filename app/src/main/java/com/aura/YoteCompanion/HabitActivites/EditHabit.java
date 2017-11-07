@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
 import com.aura.YoteCompanion.Models.Habit;
@@ -26,11 +27,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by micha on 11/3/2017.
- */
-
-public class AddHabit extends AppCompatActivity implements View.OnClickListener {
+public class EditHabit extends AppCompatActivity implements View.OnClickListener {
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mFirebaseAuth;
@@ -50,6 +47,12 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
+        fab.setVisibility(View.INVISIBLE);
+
+        Intent intent = getIntent();
+        final Habit habit = (Habit) intent.getSerializableExtra("Habit");
+
         habit_name = (EditText) findViewById(R.id.edit_habit_name);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -65,8 +68,18 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         datePickerButton.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
-        fab.setVisibility(View.INVISIBLE);
+        try {
+            habit_name.setText(habit.getHabitName());
+            tvDate.setText(habit.getDate());
+            tvTime.setText(habit.getTime());
+            details.setText(habit.getDetails());
+            number_of_times.setText(habit.getNumOfTimes());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Cant Fetch Habit :( ", Toast.LENGTH_SHORT).show();
+        }
+
 
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
@@ -103,7 +116,6 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         finish();
     }
 
-    @Override
     public void onClick(View v) {
         if (v == datePickerButton) {
             // Get Current Date
@@ -112,11 +124,11 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            tvDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-                        }
-                    },
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    tvDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                }
+            },
                     mYear, mMonth, mDay);
             datePickerDialog.show();
         }

@@ -51,6 +51,11 @@
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="title_activity_settings_new">Settings</string>
 
+    <string name="invitation_message">This app is terrific, give it a try and get $5 off!</string>
+    <string name="invitation_deep_link">http://example.com/offer/five_dollar_offer</string>
+    <string name="invitation_custom_image">https://developers.google.com/identity/images/g-logo.png</string>
+    <string name="invitation_cta">Install!</string>
+    <string name="invitation_title">Send App Invite Quickstart Invitation</string>
 
     <!--Notifications-->
     <string name="pref_ringtone_silent">Silent</string>
@@ -83,5 +88,6 @@
     <string name="key_notifications_new_message_ringtone">key_notifications_new_message_ringtone</string>
     <string name="key_vibrate">key_vibrate</string>
     <string name="key_send_feedback">key_send_feedback</string>
+
 
 </resources>

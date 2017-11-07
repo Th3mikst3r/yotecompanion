@@ -1,33 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.aura.YoteCompanion.NoteActivities.NotesList">
+    tools:context="com.aura.YoteCompanion.UI.MainActivity">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/action_notes"
-            android:title="Notes"
-            />
-        <item
-            android:id="@+id/action_home"
-            android:title="Home"
-            />
-        <!--android:icon="@drawable/ic_menu_camera"-->
-        <item
-            android:id="@+id/action_habits"
-            android:title="Habits" />
-    </group>
+    <item
+        android:id="@+id/action_settings"
+        android:title="Settings" />
 
-    <item android:title="Management">
-        <menu>
-            <item
-                android:id="@+id/action_refresh"
-                android:title="Refresh" />
-            <item
-                android:id="@+id/action_settings"
-                android:title="Settings" />
-            <item
-                android:id="@+id/action_logout"
-                android:title="Logout" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/action_share"
+        android:title="Share" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="Logout" />
 </menu>

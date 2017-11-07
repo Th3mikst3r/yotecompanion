@@ -1,0 +1,135 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.aura.YoteCompanion.HabitActivites.ViewHabit"
+    tools:showIn="@layout/activity_view_habit">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Habit:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:id="@+id/lbl_habit_title_tv"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/lbl_habit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_habit_title_tv"
+        android:layout_marginTop="7dp"
+        android:clickable="true"
+        android:inputType="text"
+        android:labelFor="@id/lbl_habit_title"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/lbl_habit_details_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_habit_title"
+        android:layout_marginTop="15dp"
+        android:text="Details:"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lbl_habit_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_habit_details_tv"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/lbl_habit_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_habit_details"
+        android:layout_marginTop="15dp"
+        android:text="Reminder Date"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lbl_habit_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_habit_date_tv"
+        android:clickable="true"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/lbl_habit_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_habit_date"
+        android:layout_marginTop="15dp"
+        android:text="Reminder Time"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lbl_habit_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_habit_time_tv"
+        android:clickable="true"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/lbl_habit_repeat_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_habit_time"
+        android:layout_marginTop="15dp"
+        android:text="Number of Repetitions"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lbl_habit_repeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_habit_repeat_tv"
+        android:clickable="true"
+        android:textSize="15sp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbl_saved_at"
+        android:textSize="14sp"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/lbl_habit_details"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbl_habit_isChecked"
+        android:textSize="14sp"
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/lbl_saved_at"
+        android:textColor="@color/colorAccent"/>
+</RelativeLayout>

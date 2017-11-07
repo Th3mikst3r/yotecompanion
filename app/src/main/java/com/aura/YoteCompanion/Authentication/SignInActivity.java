@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.aura.YoteCompanion.HomeActivity;
 import com.aura.YoteCompanion.R;
+import com.aura.YoteCompanion.UI.MainActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -56,12 +56,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
         if (mFirebaseUser != null) {
             /*Displays the logged in user on the HomeActivity*/
-            startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+            startActivity(new Intent(SignInActivity.this, MainActivity.class));
             finish();
         }
         //Trying to print user name on home page
         try {
-            Intent sendInt = new Intent(getBaseContext(), HomeActivity.class);
+            Intent sendInt = new Intent(getBaseContext(), MainActivity.class);
             sendInt.putExtra("UserName",mFirebaseUser.getDisplayName());
             startActivity(sendInt);
             finish();
@@ -146,7 +146,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                         Toast.makeText(SignInActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -192,7 +192,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             //userInfoPass();
-                            startActivity(new Intent(SignInActivity.this, HomeActivity.class));
+                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             finish();
                         }
                     }

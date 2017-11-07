@@ -11,7 +11,29 @@ public class Habit implements Serializable {
     private String date;
     private String time;
     private String numOfTimes;
+    private String details;
+    private Boolean isChecked;
 
+    public Habit(String habitName, String details, String date, String time, String numOfTimes , Boolean isChecked) {
+        this.setHabitName(habitName);
+        this.setDetails(details);
+        this.setDate(date);
+        this.setTime(time);
+        this.setNumOfTimes(numOfTimes);
+        this.setIsChecked(isChecked);
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("habitName", getHabitName().toString());
+        result.put("details", getDetails().toString());
+        result.put("date",getDate());
+        result.put("time",getTime());
+        result.put("Number Of Times", getNumOfTimes());
+        result.put("isChecked", getIsChecked());
+        return result;
+    }
 
     public String getHabitName() {
         return HabitName;
@@ -19,6 +41,14 @@ public class Habit implements Serializable {
 
     public void setHabitName(String habitName) {
         HabitName = habitName;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public Habit() {//Constructor
@@ -48,21 +78,11 @@ public class Habit implements Serializable {
         this.numOfTimes = numOfTimes;
     }
 
-    public Habit(String habitName, String date, String time, String numOfTimes) {
-        this.setHabitName(habitName);
-        this.setDate(date);
-        this.setTime(time);
-        this.setNumOfTimes(numOfTimes);
+    public Boolean getIsChecked() {
+        return isChecked;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("habitName", getHabitName().toString());
-        result.put("date",getDate());
-        result.put("time",getTime());
-        result.put("Number Of Times", getNumOfTimes());
-        return result;
+    public void setIsChecked(Boolean isChecked) {
+        this.isChecked = isChecked;
     }
-
 }

@@ -30,6 +30,7 @@ public class ViewNote extends AppCompatActivity {
         lbl_title = (TextView) findViewById(R.id.lbl_note_title) ;
         lbl_saved_at = (TextView) findViewById(R.id.lbl_saved_at);
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,5 +49,22 @@ public class ViewNote extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        lbl_title.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(), EditNote.class);
+                in.putExtra("Note", note);
+                startActivity(in);
+            }
+        });
+        lbl_details.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(), EditNote.class);
+                in.putExtra("Note", note);
+                startActivity(in);
+            }
+        });
     }
 }

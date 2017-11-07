@@ -2,73 +2,82 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginRight="50dp"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
+    android:focusable="true"
+    android:paddingBottom="10dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:background="?attr/selectableItemBackground"
-    android:focusable="true">
+    android:paddingTop="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_note_icon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/img_note_icon"/>
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/ic_launcher" />
 
 
     <TextView
         android:id="@+id/lbl_habitName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="16dp"
         android:layout_alignParentTop="true"
-        android:textColor="@color/colorSecondaryText"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="2dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/img_note_icon"
-        android:layout_marginLeft="10dp"
-        android:maxLength="20"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLength="20"
+        android:maxLines="1"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
     <TextView
+        android:id="@+id/lbl_numOfTimes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_habitName"
-        android:id="@+id/lbl_numOfTimes"
-        android:textColor="@color/colorSecondaryText"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="2dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/img_note_icon"
-        android:layout_marginLeft="10dp"
-        android:maxLength="30"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLength="30"
+        android:maxLines="1"
+        android:textColor="@color/colorSecondaryText" />
+
     <TextView
+        android:id="@+id/lbl_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_numOfTimes"
-        android:id="@+id/lbl_date"
-        android:textColor="@color/colorSecondaryText"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="2dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/img_note_icon"
-        android:layout_marginLeft="10dp"
-        android:maxLength="30"
         android:ellipsize="end"
-        android:maxLines="1" />
-    <TextView
+        android:maxLength="30"
+        android:maxLines="1"
+        android:textColor="@color/colorSecondaryText" />
+
+    <!--<TextView
+        android:id="@+id/lbl_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_date"
-        android:id="@+id/lbl_time"
-        android:textColor="@color/colorSecondaryText"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="80dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/img_note_icon"
-        android:layout_marginLeft="10dp"
-        android:maxLength="30"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLength="30"
+        android:maxLines="1"
+        android:textColor="@color/colorSecondaryText" />-->
 
 
 </RelativeLayout>
+

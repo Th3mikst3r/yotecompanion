@@ -83,7 +83,7 @@ public class AddNotes extends AppCompatActivity {
                         Map<String, Object> noteValues = note.toMap();
 
                         Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put("/notes/" + key, noteValues);
+                        childUpdates.put("/All-Notes/" + key, noteValues);
                         childUpdates.put("/Users/" + mFirebaseUser.getUid() + "/" + key, noteValues);
                         mDatabase.updateChildren(childUpdates);
 
