@@ -16,6 +16,16 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
     private List<Note> notesList;
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView title, details, date;
 
@@ -38,16 +48,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         Note note = notesList.get(position);
         holder.title.setText(note.getTitle().toUpperCase());
         holder.details.setText(note.getDetails());
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String reportDate = df.format(note.getDateSaved());
         holder.date.setText(reportDate);
+
     }
 
     @Override
     public int getItemCount(){
         return  notesList.size();
     }
+
 }
