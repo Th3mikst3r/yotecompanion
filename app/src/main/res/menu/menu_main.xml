@@ -7,6 +7,14 @@
         android:title="Settings" />
 
     <item
+        android:id="@+id/action_refresh"
+        android:title="Refresh" />
+
+    <item
+        android:id="@+id/action_notification"
+        android:title="Test Notification" />
+
+    <item
         android:id="@+id/action_share"
         android:title="Share" />
 

@@ -14,11 +14,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class CustomDialogPreference extends DialogPreference {
+public class DeleteAccountDialogPreference extends DialogPreference {
 
     private FirebaseAuth auth;
 
-    public CustomDialogPreference(Context context, AttributeSet attrs) {
+    public DeleteAccountDialogPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         // Set the layout here
@@ -31,7 +31,7 @@ public class CustomDialogPreference extends DialogPreference {
     }
 
     @Override
-    protected void onClick(){
+    protected void onClick() {
 
         auth = FirebaseAuth.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,9 +48,7 @@ public class CustomDialogPreference extends DialogPreference {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-
-                            //ToDo Need to add intent change after deletion
+                            Toast.makeText(getContext(), "Deleted " + user, Toast.LENGTH_SHORT).show();
 
                         } else {
                             Toast.makeText(getContext(), "Unable to delete account", Toast.LENGTH_SHORT).show();
@@ -58,11 +56,9 @@ public class CustomDialogPreference extends DialogPreference {
                     }
                 });
             }
-        }).setNegativeButton("Cancel" , null);
+        }).setNegativeButton("Cancel", null);
         AlertDialog al = dialog.create();
         al.show();
     }
-
-
 
 }

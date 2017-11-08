@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.example.test1.CustomDialogPreference
-        android:key="pref_dialog"
+        android:key="customDialogDeleteAccount"
         android:title="dialog"/>
+
+    <com.example.test1.CustomDialogPreference
+        android:key="customDialogDeleteNotes"
+        android:title="dialog"/>
+
 </PreferenceScreen>
+
+
+

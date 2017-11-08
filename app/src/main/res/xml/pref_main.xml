@@ -73,17 +73,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Maintenance ">
-        <com.aura.YoteCompanion.SettingsActivites.CustomDialogPreference
+        <com.aura.YoteCompanion.SettingsActivites.DeleteAllNotesDialogPreference
             android:id="@+id/customDialogDeleteNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:key="pref_dialog"
+            android:key="customDialogDeleteNotes"
             android:title="Purge All Notes" />
-        <com.aura.YoteCompanion.SettingsActivites.CustomDialogPreference
+
+        <com.aura.YoteCompanion.SettingsActivites.DeleteAccountDialogPreference
             android:id="@+id/customDialogDeleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:key="pref_dialog"
+            android:key="customDialogDeleteAccount"
             android:title="Delete Account?"/>
     </PreferenceCategory>
 

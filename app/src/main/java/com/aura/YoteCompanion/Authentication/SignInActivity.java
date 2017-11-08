@@ -81,6 +81,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         btnReset = (Button) findViewById(R.id.btn_reset_password);
         SignInButton gsignInButton = (SignInButton) findViewById(R.id.google_signin_button); //sign in button
 
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
         //Sets fields invisible
         inputEmail.setVisibility(View.GONE);
         inputPassword.setVisibility(View.GONE);
@@ -133,6 +136,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 }
                 progressBar.setVisibility(View.VISIBLE);
 
+
                 //Email and password authentication
                 mFirebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
@@ -157,6 +161,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     private void signIn() {
+        progressBar.setVisibility(View.VISIBLE);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -185,6 +190,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(Task<AuthResult> task) {
+
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());

@@ -3,7 +3,7 @@
     package="com.aura.YoteCompanion">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,7 +25,6 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".NoteActivities.AddNotes"
             android:label="@string/title_activity_add_notes"
@@ -78,15 +77,7 @@
                 android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
         </activity>
         <activity
-            android:name=".Authentication.SettingsActivity"
-            android:label="Settings"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aura.YoteCompanion.NoteActivities.NotesList" />
-        </activity>
-        <activity
-            android:name=".SettingsActivites.SetTest"
+            android:name=".SettingsActivites.SettingsActivity"
             android:label="@string/title_activity_settings_new" />
         <activity
             android:name=".Authentication.HomeActivity"

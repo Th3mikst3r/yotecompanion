@@ -1,12 +1,10 @@
 package com.aura.YoteCompanion.NoteActivities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,14 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
 import com.aura.YoteCompanion.Helpers.DividerItemDecoration;
 import com.aura.YoteCompanion.Helpers.NotesAdapter;
 import com.aura.YoteCompanion.Models.Note;
 import com.aura.YoteCompanion.R;
-import com.aura.YoteCompanion.SettingsActivites.SetTest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -102,7 +98,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
         lstNotes.setAdapter(nAdapter);
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         notesRef = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
 
         notesRef.addChildEventListener(new ChildEventListener() {
@@ -125,6 +121,8 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
                 /*if (!dataSnapshot.exists()) {
                     notesRef.getRef().removeValue();
                 }*/
+                DatabaseReference notesRefDelete = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
+                notesRefDelete.getRef().removeValue();
             }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -132,7 +130,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        //
+        /*//
         lstNotes.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lstNotes, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -149,10 +147,22 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                DatabaseReference notesRefDelete = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
+                                notesRefDelete.getRef().removeValue();
                                 try {
-                                    notesList.remove(position);
-                                    nAdapter.notifyDataSetChanged();
-                                    Toast.makeText(NotesList.this, "Note Delete", Toast.LENGTH_SHORT).show();
+                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Note Deleted", Snackbar.LENGTH_LONG).
+                                            setAction("Undo?", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Snackbar snackbar1 = Snackbar.make(findViewById(R.id.coordinatorLayout), "Ok", Snackbar.LENGTH_SHORT);
+                                                    snackbar1.show();
+                                                    finish();
+                                                }
+                                            });
+                                    snackbar.show();
+                                    *//*notesList.remove(position);
+                                    nAdapter.notifyDataSetChanged();*//*
+                                    //Toast.makeText(NotesList.this, "Note Delete", Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -162,7 +172,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
                 AlertDialog alertDialog = alert.create();
                 alertDialog.show();
             }
-        }));
+        }));*/
     }
 
     @Override
@@ -174,22 +184,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent settings = new Intent(getApplicationContext(), SetTest.class);
-                startActivity(settings);
-                break;
-            case R.id.action_logout:
-                mFirebaseAuth.signOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                mFirebaseUser = null;
-                //mUsername = ANONYMOUS;
-                Intent log_out = new Intent(getApplicationContext(), SignInActivity.class);
-                startActivity(log_out);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
         }
-
         return false;
     }
 
@@ -220,6 +215,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
                     View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
                     if (child != null && clickListener != null) {
                         clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+
                     }
                 }
             });

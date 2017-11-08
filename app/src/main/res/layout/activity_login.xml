@@ -7,14 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.aura.YoteCompanion.Authentication.SignInActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
@@ -80,7 +72,7 @@
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="signedout"
+            android:text="@string/btn_sign_out"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
@@ -88,7 +80,18 @@
             android:id="@+id/google_signin_button"
             android:layout_width="wrap_content"
 
-            android:layout_height="wrap_content"></com.google.android.gms.common.SignInButton>
+            android:layout_height="wrap_content">
+
+        </com.google.android.gms.common.SignInButton>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.17"
+            android:visibility="gone" />
 
     </LinearLayout>
 

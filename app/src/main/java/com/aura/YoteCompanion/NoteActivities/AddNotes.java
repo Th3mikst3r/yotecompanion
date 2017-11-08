@@ -12,13 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
+import com.aura.YoteCompanion.Models.Note;
 import com.aura.YoteCompanion.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.aura.YoteCompanion.Models.Note;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ public class AddNotes extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUsername;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class AddNotes extends AppCompatActivity {
                     EditText txt_note_title = (EditText) findViewById(R.id.txt_note_title);
                     EditText txt_note_details = (EditText) findViewById(R.id.txt_note_details);
 
+
                     //Error handling for fields
                     if (txt_note_title.getText().toString().matches("")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(AddNotes.this)
@@ -83,26 +85,61 @@ public class AddNotes extends AppCompatActivity {
                         Map<String, Object> noteValues = note.toMap();
 
                         Map<String, Object> childUpdates = new HashMap<>();
-                        childUpdates.put("/All-Notes/" + key, noteValues);
+
+                        Map<String, Object> allNotesMap = new HashMap<>();
+                        allNotesMap.put("/All-Notes/" + key, noteValues);
+
                         childUpdates.put("/Users/" + mFirebaseUser.getUid() + "/" + key, noteValues);
                         mDatabase.updateChildren(childUpdates);
 
                         mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                if(databaseError == null) {
+                                if (databaseError == null) {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_LONG);
                                     toast.show();
                                     finish();
-                                }
-                                else {
+                                } else {
                                     Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Error: " + databaseError.getMessage() + " -- Note WAS NOT saved" ,  Toast.LENGTH_LONG);
+                                            "Error: " + databaseError.getMessage(), Toast.LENGTH_LONG);
                                     toast.show();
                                     finish();
                                 }
+
                             }
                         });
+
+                        /*if (txt_note_title.getText().toString().matches(note.getTitle())) {
+                            //Toast.makeText(EditNote.this, "Note already exists", Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayoutAdd), "Note already exists", Snackbar.LENGTH_LONG).
+                                    setAction("Ok", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Snackbar snackbar1 = Snackbar.make(findViewById(R.id.coordinatorLayoutAdd), "Ok", Snackbar.LENGTH_SHORT);
+                                            snackbar1.show();
+                                            finish();
+                                        }
+                                    });
+                            snackbar.show();
+                        }else {
+                            mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    if (databaseError == null) {
+                                        Toast toast = Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_LONG);
+                                        toast.show();
+                                        finish();
+                                    } else {
+                                        Toast toast = Toast.makeText(getApplicationContext(),
+                                                "Error: " + databaseError.getMessage(), Toast.LENGTH_LONG);
+                                        toast.show();
+                                        finish();
+                                    }
+
+                                }
+                            });
+                        }*/
+
                     }
                 }
             });

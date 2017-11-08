@@ -24,7 +24,7 @@ import com.aura.YoteCompanion.Helpers.DividerItemDecoration;
 import com.aura.YoteCompanion.Helpers.HabitAdapter;
 import com.aura.YoteCompanion.Models.Habit;
 import com.aura.YoteCompanion.R;
-import com.aura.YoteCompanion.SettingsActivites.SetTest;
+import com.aura.YoteCompanion.SettingsActivites.SettingsActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -175,7 +175,7 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent settings = new Intent(getApplicationContext(), SetTest.class);
+                Intent settings = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(settings);
                 break;
             case R.id.action_logout:

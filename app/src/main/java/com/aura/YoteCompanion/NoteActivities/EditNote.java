@@ -99,19 +99,49 @@ public class EditNote extends AppCompatActivity {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                 if(databaseError == null) {
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "Note saved successfully", Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_LONG);
                                     toast.show();
                                     finish();
                                 }
                                 else {
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            "An error occurred while saving the note. Error: "
-                                                    + databaseError.getMessage(), Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "An error occurred while saving the note. Error: "
+                                            + databaseError.getMessage(), Toast.LENGTH_LONG);
                                     toast.show();
                                 }
                             }
                         });
+
+                        /*NOT WORKING YET, THIS IS THE ERROR HANDLING FOR SAVING OVER EXISTING NOTES WITH SAME TITLE.*/
+                        /*if (title.matches(note.getTitle())) {
+                            //Toast.makeText(EditNote.this, "Note already exists", Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Note already exists", Snackbar.LENGTH_LONG).
+                            setAction("Ok", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Snackbar snackbar1 = Snackbar.make(findViewById(R.id.coordinatorLayout), "Ok", Snackbar.LENGTH_SHORT);
+                                    snackbar1.show();
+                                    finish();
+                                }
+                            });
+                            snackbar.show();
+                        }else {
+                            notesRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    if(databaseError == null) {
+                                        Toast toast = Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_LONG);
+                                        toast.show();
+                                        finish();
+                                    }
+                                    else {
+                                        Toast toast = Toast.makeText(getApplicationContext(), "An error occurred while saving the note. Error: "
+                                                + databaseError.getMessage(), Toast.LENGTH_LONG);
+                                        toast.show();
+                                    }
+                                }
+                            });
+                        }*/
+
                     }
                 }
             });
