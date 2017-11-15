@@ -83,6 +83,7 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
 
         String key = mDatabase.child("Habits").push().getKey();
         Habit habit = new Habit();
+        habit.setHabitId(key);
         habit.setHabitName(habit_name.getText().toString());
         habit.setDetails(details.getText().toString());
         habit.setDate(tvDate.getText().toString());

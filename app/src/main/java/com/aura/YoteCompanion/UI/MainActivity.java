@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -53,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             String mUsername = mFirebaseUser.getDisplayName();
         }
 
-        Button refresh = (Button) findViewById(R.id.button2);
+        /*Button refresh = (Button) findViewById(R.id.button2);
         //refresh.setVisibility();
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 Toast.makeText(MainActivity.this, "Fragment Refreshed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
     }
     // Add Fragments to Tabs
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new NotesListFragment(), "Notes");
         adapter.addFragment(new HabitsListFragment(), "Habits");
-        adapter.addFragment(new SettingsFragment(), "Settings");
+        //adapter.addFragment(new SettingsFragment(), "Settings");
         viewPager.setAdapter(adapter);
     }
 

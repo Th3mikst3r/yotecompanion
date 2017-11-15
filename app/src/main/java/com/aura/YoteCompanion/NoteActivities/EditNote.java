@@ -88,11 +88,13 @@ public class EditNote extends AppCompatActivity {
                         note.setTitle(txt_note_title.getText().toString());
                         note.setDateSaved(new Date());
 
+
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference notesRef = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
 
                         String key = notesRef.push().getKey();
                         Map<String,Object> childUpdates = new HashMap<>();
+                        note.setNoteId(key);
                         childUpdates.put(key, note.toMap());
 
                         notesRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {

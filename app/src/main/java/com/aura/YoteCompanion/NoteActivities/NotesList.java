@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +47,8 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
     private String mUsername;
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference notesRef;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String LOG_TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,21 +111,16 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
                     String title = dataSnapshot.child("title").getValue().toString();
                     String details = (String) dataSnapshot.child("details").getValue();
                     String date = (String) dataSnapshot.child("dateSaved").getValue();
-                    Note note = new Note(title, details, date);
+                    String noteId = (String) dataSnapshot.child("noteId").getValue();
+                    Note note = new Note(title, details, date, noteId);
                     notesList.add(note);
                     nAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                /*if (!dataSnapshot.exists()) {
-                    notesRef.getRef().removeValue();
-                }*/
-                DatabaseReference notesRefDelete = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
-                notesRefDelete.getRef().removeValue();
             }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -130,51 +128,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        /*//
-        lstNotes.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), lstNotes, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Note note = notesList.get(position);
-                Intent intent = new Intent(getApplicationContext(), ViewNote.class);
-                intent.putExtra("Note", note);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, final int position) {
-                final AlertDialog.Builder alert = new AlertDialog.Builder(NotesList.this);
-                alert.setMessage("Delete the note? ")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                DatabaseReference notesRefDelete = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
-                                notesRefDelete.getRef().removeValue();
-                                try {
-                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Note Deleted", Snackbar.LENGTH_LONG).
-                                            setAction("Undo?", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    Snackbar snackbar1 = Snackbar.make(findViewById(R.id.coordinatorLayout), "Ok", Snackbar.LENGTH_SHORT);
-                                                    snackbar1.show();
-                                                    finish();
-                                                }
-                                            });
-                                    snackbar.show();
-                                    *//*notesList.remove(position);
-                                    nAdapter.notifyDataSetChanged();*//*
-                                    //Toast.makeText(NotesList.this, "Note Delete", Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        })
-                        .setNegativeButton("Cancel" , null);
-                AlertDialog alertDialog = alert.create();
-                alertDialog.show();
-            }
-        }));*/
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

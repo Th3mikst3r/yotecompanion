@@ -3,9 +3,11 @@ package com.aura.YoteCompanion.UI;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,14 +41,16 @@ import java.util.List;
 public class HabitsListFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
 
     private List<Habit> habitList  = new ArrayList<>();
-    private DatabaseReference habitRef;
+    private DatabaseReference habitRef, mDeleteUserHabitDB;
     private RecyclerView lstHabit;
     private HabitAdapter hAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.activity_habitlist, container, false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout_habits_list);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +77,7 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),alarmManager.INTERVAL_DAY,pendingIntent);
 */
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser mFireBaseUser = mFirebaseAuth.getCurrentUser();
+        final FirebaseUser mFireBaseUser = mFirebaseAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         habitRef = database.getReference("/Habits/" + mFireBaseUser.getUid() + "/");
@@ -87,8 +91,9 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                         String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
                         String date = dataSnapshot.child("date").getValue().toString();
                         String time = dataSnapshot.child("time").getValue().toString();
+                        String habitId = dataSnapshot.child("habitId").getValue().toString();
                         boolean isChecked = (boolean) dataSnapshot.child("isChecked").getValue();
-                        Habit habit = new Habit(habitName, details, numOfTimes, date, time, isChecked);
+                        Habit habit = new Habit(habitName, details, numOfTimes, date, time, habitId, isChecked);
                         habitList.add(habit);
                         hAdapter.notifyDataSetChanged();
                     }
@@ -112,20 +117,33 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                 Intent intent = new Intent(getActivity(), ViewHabit.class);
                 intent.putExtra("Habit", habit);
                 startActivity(intent);
-                Toast.makeText(v.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onLongClick(View view, final int position) {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                alert.setMessage("Delete the Habit? ")
+                alert.setMessage("Delete this Habit? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
+                                    Habit habit = habitList.get(position);
+                                    String habitId = habit.getHabitId();
+                                    mDeleteUserHabitDB = FirebaseDatabase.getInstance().getReference().child("/Habits/" + mFireBaseUser.getUid() + "/").child(habitId);
+                                    mDeleteUserHabitDB.removeValue();
                                     habitList.remove(position);
-                                    hAdapter.notifyDataSetChanged();
-                                    Toast.makeText(v.getContext(), "Habit Delete", Toast.LENGTH_SHORT).show();
+                                    hAdapter.notifyItemRemoved(position);
+                                    Toast.makeText(v.getContext(), "Deleted Successfully " + habitId, Toast.LENGTH_SHORT).show();
+                                    /*Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "Note Deleted", Snackbar.LENGTH_LONG).
+                                            setAction("Undo?", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    Snackbar snackbar1 = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "Ok", Snackbar.LENGTH_SHORT);
+                                                    snackbar1.show();
+                                                }
+                                            });
+                                    snackbar.show();*/
                                 } catch (Exception e) {
+                                    Toast.makeText(v.getContext(), "Failed to delete....", Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
                                 }
                             }
@@ -136,11 +154,27 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
             }
         }));
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout_habits_list);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
+                refresh();
+            }
+        });
+
         return  v;
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+    }
+    public void refresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                hAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 3000);
     }
 }

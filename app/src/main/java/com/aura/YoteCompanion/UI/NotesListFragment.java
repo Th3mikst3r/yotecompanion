@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,18 +38,19 @@ import java.util.List;
 public class NotesListFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
 
     private List<Note> notesList  = new ArrayList<>();
-    private DatabaseReference notesRef, adminNoteRef;
+    private DatabaseReference notesDatabaseRef, mDeleteUserNoteDB;
     private RecyclerView lstNotes;
     private NotesAdapter nAdapter;
-    //private DataSnapshot dataSnapshot;
-    //private final static String FRAGMENT_TAG = "FRAGMENTB_TAG";
+    private String TAG;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.activity_noteslist, container, false);
-
         onDestroyView();
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout_notes_list);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,51 +67,36 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
         lstNotes.setLayoutManager(new LinearLayoutManager(getActivity()));
         lstNotes.setAdapter(nAdapter);
 
-
-        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser mFireBaseUser = mFirebaseAuth.getCurrentUser();
-
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        //boolean admin = mFireBaseUser.getUid().equals("RBMyK8QpEohgmqzabXBAm811CBh1");
+        notesDatabaseRef = database.getReference("/Users/" + mFireBaseUser.getUid() + "/");
 
-        notesRef = database.getReference("/Users/" + mFireBaseUser.getUid() + "/");
-
-        notesRef.addChildEventListener(new ChildEventListener() {
+        notesDatabaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.getValue() != null) {
                     String title = dataSnapshot.child("title").getValue().toString();
                     String details = (String) dataSnapshot.child("details").getValue();
                     String date = (String) dataSnapshot.child("dateSaved").getValue();
-                    Note note = new Note(title, details, date);
+                    String noteId = (String) dataSnapshot.child("noteId").getValue();
+                    Note note = new Note(title, details, date, noteId);
                     notesList.add(note);
                     nAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-               onDestroyView();
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {onDestroyView();}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                /*onDestroyView();
-                String key = dataSnapshot.getKey();
-                if (notesList.contains(key)) {
-                    int index = notesList.indexOf(key);
-                    notesList.remove(index);
-                }*/
-                onDestroyView();
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {onDestroyView();}
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
                 onDestroyView();
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                onDestroyView();
-            }
+            public void onCancelled(DatabaseError databaseError) {onDestroyView();}
         });
 
         lstNotes.addOnItemTouchListener(new NotesList.RecyclerTouchListener(getActivity(), lstNotes, new NotesList.ClickListener() {
@@ -128,21 +116,13 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                  // DatabaseReference noteDelete.child("Users").child( mFireBaseUser.getUid()+ "/").removeValue();
+                                    Note note = notesList.get(position);
+                                    String noteId = note.getNoteId();
+                                    mDeleteUserNoteDB = FirebaseDatabase.getInstance().getReference().child("/Users/" + mFireBaseUser.getUid() + "/").child(noteId);
+                                    mDeleteUserNoteDB.removeValue();
                                     notesList.remove(position);
-                                    nAdapter.notifyDataSetChanged();
-                                    deleteUserNote(mFireBaseUser.getUid());
-                                    //notesRef.getRef().child( mFireBaseUser.getUid()+ "/").removeValue();
+                                    nAdapter.notifyItemRemoved(position);
                                     Toast.makeText(v.getContext(), "Deleted Successfully ", Toast.LENGTH_SHORT).show();
-                                    /*Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "Note Deleted", Snackbar.LENGTH_LONG).
-                                            setAction("Undo?", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    Snackbar snackbar1 = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "Ok", Snackbar.LENGTH_SHORT);
-                                                    snackbar1.show();
-                                                }
-                                            });
-                                    snackbar.show();*/
                                 } catch (Exception e) {
                                     Toast.makeText(v.getContext(), "Failed to delete....", Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
@@ -155,6 +135,15 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
             }
         }));
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout_notes_list);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
+                refresh();
+            }
+        });
+
         //Return the fragment view
         return  v;
     }
@@ -163,12 +152,18 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
         super.onDestroyView();
         notesList.clear();
     }
-    private void deleteUserNote(String userId) {
-        notesRef.child("/Users/").child(userId).removeValue();
-    }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    public void refresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                nAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 3000);
+    }
+
 }

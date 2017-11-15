@@ -13,6 +13,7 @@ public class Note implements Serializable {
     private String Title;
     private String Details;
     private Date DateSaved;
+    private String noteId;
 
     public String getTitle() {
         return Title;
@@ -41,9 +42,10 @@ public class Note implements Serializable {
     public Note() {//Constructor
     }
 
-    public Note(String title, String details, String date) {
+    public Note(String title, String details, String date, String noteId) {
         this.setTitle(title);
         this.setDetails(details);
+        this.setNoteId(noteId);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss zzz");
         try {
             this.setDateSaved(sdf.parse(date));
@@ -59,7 +61,15 @@ public class Note implements Serializable {
         result.put("title", getTitle());
         result.put("details", getDetails());
         result.put("dateSaved", getDateSaved().toString());
+        result.put("noteId",getNoteId());
         return result;
     }
 
+    public String getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(String noteId) {
+        this.noteId = noteId;
+    }
 }

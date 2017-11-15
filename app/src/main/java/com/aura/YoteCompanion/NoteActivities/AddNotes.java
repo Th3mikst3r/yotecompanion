@@ -76,12 +76,14 @@ public class AddNotes extends AppCompatActivity {
                         txt_note_details.setEnabled(false);
                         txt_note_title.setEnabled(false);
 
-                        String key = mDatabase.child("notes").push().getKey();
-                        Note note = new Note();
+                        //gives each note a key ID
+                        String key = mDatabase.child("Users").push().getKey();
 
+                        Note note = new Note();
                         note.setDetails(txt_note_details.getText().toString());
                         note.setTitle(txt_note_title.getText().toString());
                         note.setDateSaved(new Date());
+                        note.setNoteId(key);
                         Map<String, Object> noteValues = note.toMap();
 
                         Map<String, Object> childUpdates = new HashMap<>();

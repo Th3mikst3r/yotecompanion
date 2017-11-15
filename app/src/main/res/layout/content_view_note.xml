@@ -63,4 +63,13 @@
         android:layout_marginTop="35dp"
         android:layout_below="@+id/lbl_note_details"
         android:textColor="@color/colorAccent"/>
+
+    <Button
+        android:id="@+id/btndeletenote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="Delete Note? "
+        android:visibility="visible" />
 </RelativeLayout>
