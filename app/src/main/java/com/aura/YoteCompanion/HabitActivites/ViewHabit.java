@@ -45,7 +45,6 @@ public class ViewHabit extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),EditHabit.class);
                 intent.putExtra("Habit", habit);
                 startActivity(intent);
-                //Toast.makeText(ViewHabit.this, "Clicked For editing", Toast.LENGTH_SHORT).show();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,10 +52,10 @@ public class ViewHabit extends AppCompatActivity {
 
         try {
             lbl_title.setText(habit.getHabitName());
-            lbl_details.setText(habit.getDetails().toString());
+            lbl_details.setText(habit.getDetails());
             lbl_date.setText(habit.getDate());
             lbl_time.setText(habit.getTime());
-            lbl_repeat.setText(habit.getNumOfTimes());
+            //lbl_repeat.setText(habit.getNumOfTimes());
 
 
         } catch (Exception e) {

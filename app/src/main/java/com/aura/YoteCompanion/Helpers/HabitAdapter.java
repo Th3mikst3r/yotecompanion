@@ -40,7 +40,7 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         holder.name.setText(habit.getHabitName().toUpperCase());
         holder.date.setText(habit.getDate());
         //holder.time.setText(habit.getTime());
-        holder.numOfTimes.setText(habit.getNumOfTimes());
+        //holder.numOfTimes.setText(habit.getNumOfTimes());
     }
 
     @Override

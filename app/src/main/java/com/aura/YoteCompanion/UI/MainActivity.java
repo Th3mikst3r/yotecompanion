@@ -1,12 +1,7 @@
 
 package com.aura.YoteCompanion.UI;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,14 +9,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
@@ -46,13 +39,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient mGoogleApiClient;
     private static final int REQUEST_INVITE = 0;
     private static final String TAG = MainActivity.class.getSimpleName();
-    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -71,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        Toast.makeText(this, "Wecome: " + mFirebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignInActivity.class));
@@ -80,23 +72,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             String mUsername = mFirebaseUser.getDisplayName();
         }
 
-        /*Button refresh = (Button) findViewById(R.id.button2);
-        //refresh.setVisibility();
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(MainActivity.this, "Fragment Refreshed", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
     }
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new NotesListFragment(), "Notes");
         adapter.addFragment(new HabitsListFragment(), "Habits");
-        //adapter.addFragment(new SettingsFragment(), "Settings");
         viewPager.setAdapter(adapter);
     }
 
@@ -105,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
     }
 
+    // Main menu fragment adapter 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -147,14 +129,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 Intent settings = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(settings);
                 break;
-            case R.id.action_notification:
-                addNotification();
-                break;
-            case R.id.action_refresh:
-                refresh();
-                break;
             case R.id.action_share:
                 onInviteClicked();
+                break;
+            case R.id.action_donate:
+                onDonateClicked();
                 break;
             case R.id.action_logout:
                 mFirebaseAuth.signOut();
@@ -168,6 +147,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 return super.onOptionsItemSelected(item);
         }
         return false;
+    }
+
+    private void onDonateClicked() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://streamlabs.com/mikeduos"));
+        startActivity(intent);
+        Toast.makeText(this, "Donate Button clicked", Toast.LENGTH_SHORT).show();
     }
 
     private void onInviteClicked() {
@@ -198,34 +186,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
-    public void refresh(){
-        Toast.makeText(this, "Not working yet :( ", Toast.LENGTH_SHORT).show();
-       /* Fragment frg = null;
-        frg = getSupportFragmentManager().findFragmentByTag("FRAGMENTB_TAG");
-        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.detach(frg);
-        ft.attach(frg);
-        ft.commit();*/
-    }
-
-    private void addNotification() {
-        long[] pattern = {200,200,200,200,200,200,200,200,200};
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                .setContentTitle("Habits!")
-                .setContentText("You have unfinished habits to complete")
-                .setLights(Color.GREEN, 500, 500)
-                .setVibrate(pattern)
-                .setSound(alarmSound);
-
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-
-        // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
-    }
 }

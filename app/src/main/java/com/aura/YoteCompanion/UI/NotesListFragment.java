@@ -73,6 +73,17 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
 
         notesDatabaseRef = database.getReference("/Users/" + mFireBaseUser.getUid() + "/");
 
+      /*  if(lstNotes.getChildCount() == 0){
+            Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "You have no notes...", Snackbar.LENGTH_INDEFINITE).
+                    setAction("Create one", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), AddNotes.class);
+                            startActivity(intent);
+                        }
+                    });
+            snackbar.show();
+        }*/
         notesDatabaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -88,7 +99,9 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {onDestroyView();}
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {onDestroyView();
+
+            }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {onDestroyView();}
             @Override
@@ -163,7 +176,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
                 nAdapter.notifyDataSetChanged();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        }, 3000);
+        }, 1200);
     }
 
 }

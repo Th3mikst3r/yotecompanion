@@ -68,19 +68,25 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
         lstHabit.setLayoutManager(new LinearLayoutManager(getActivity()));
         lstHabit.setAdapter(hAdapter);
 
-  /*      Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,8);
-        calendar.set(Calendar.MINUTE,42);
-        Intent intent = new Intent(getActivity(),NotificationReciever.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),alarmManager.INTERVAL_DAY,pendingIntent);
-*/
+
+
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser mFireBaseUser = mFirebaseAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         habitRef = database.getReference("/Habits/" + mFireBaseUser.getUid() + "/");
+
+      /*  if(hAdapter.getItemCount() == 0){
+            Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutHabitsList), "You have no habits", Snackbar.LENGTH_INDEFINITE).
+                    setAction("Create one", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), AddHabit.class);
+                            startActivity(intent);
+                        }
+                    });
+            snackbar.show();
+        }*/
 
         habitRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -88,15 +94,16 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                     if(dataSnapshot.getValue() != null) {
                         String habitName = dataSnapshot.child("habitName").getValue().toString();
                         String details = dataSnapshot.child("details").getValue().toString();
-                        String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
+                        //String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
                         String date = dataSnapshot.child("date").getValue().toString();
                         String time = dataSnapshot.child("time").getValue().toString();
-                        String habitId = dataSnapshot.child("habitId").getValue().toString();
+                        String habitId = (String) dataSnapshot.child("habitId").getValue();
                         boolean isChecked = (boolean) dataSnapshot.child("isChecked").getValue();
-                        Habit habit = new Habit(habitName, details, numOfTimes, date, time, habitId, isChecked);
+                        Habit habit = new Habit(habitName, details,/* numOfTimes,*/ date, time, habitId, isChecked);
                         habitList.add(habit);
                         hAdapter.notifyDataSetChanged();
                     }
+
             }
 
             @Override
@@ -133,15 +140,7 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                                     habitList.remove(position);
                                     hAdapter.notifyItemRemoved(position);
                                     Toast.makeText(v.getContext(), "Deleted Successfully " + habitId, Toast.LENGTH_SHORT).show();
-                                    /*Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "Note Deleted", Snackbar.LENGTH_LONG).
-                                            setAction("Undo?", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    Snackbar snackbar1 = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "Ok", Snackbar.LENGTH_SHORT);
-                                                    snackbar1.show();
-                                                }
-                                            });
-                                    snackbar.show();*/
+
                                 } catch (Exception e) {
                                     Toast.makeText(v.getContext(), "Failed to delete....", Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();
@@ -175,6 +174,6 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                 hAdapter.notifyDataSetChanged();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
-        }, 3000);
+        }, 1200);
     }
 }

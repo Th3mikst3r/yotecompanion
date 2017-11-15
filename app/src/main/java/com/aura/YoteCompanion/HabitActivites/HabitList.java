@@ -111,12 +111,12 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
                     //String uid = dataSnapshot.getValue();
                     String habitName = dataSnapshot.child("habitName").getValue().toString();
                     String details = dataSnapshot.child("details").getValue().toString();
-                    String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
+                    //String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
                     String date = dataSnapshot.child("date").getValue().toString();
                     String time = dataSnapshot.child("time").getValue().toString();
                     String habitId = dataSnapshot.child("habitId").getValue().toString();
                     boolean isChecked = (boolean) dataSnapshot.child("isChecked").getValue();
-                    Habit habit = new Habit(habitName, details, numOfTimes, date, time, habitId, isChecked);
+                    Habit habit = new Habit(habitName, details, /*numOfTimes , */ date, time, habitId, isChecked);
                     habitList.add(habit);
                     hAdapter.notifyDataSetChanged();
                 }

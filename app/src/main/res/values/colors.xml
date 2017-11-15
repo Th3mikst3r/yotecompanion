@@ -14,27 +14,5 @@
     <color name="common_border_color">#000000</color>
 
 
-<!--    Second choice
-    <color name="primaryColor">#00e5ff</color>
-    <color name="primaryLightColor">#6effff</color>
-    <color name="primaryDarkColor">#00b2cc</color>
-    <color name="secondaryColor">#8fa3ad</color>
-    <color name="secondaryLightColor">#bfd4df</color>
-    <color name="secondaryDarkColor">#61747e</color>
-    <color name="primaryTextColor">#000000</color>
-    <color name="secondaryTextColor">#000000</color>-->
-
-    <!--Fab Colors-->
-    <color name="black_semi_transparent">#b2000000</color>
-    <color name="background">#ffffff</color>
-    <color name="half_black">#808080</color>
-    <color name="white">#fafafa</color>
-    <color name="white_pressed">#f1f1f1</color>
-    <color name="pink">#e91e63</color>
-    <color name="pink_pressed">#ec407a</color>
-    <color name="dark_grey">#424242</color>
-    <color name="medium_grey">#9E9E9E</color>
-    <color name="button_grey">#757575</color>
-
 
 </resources>

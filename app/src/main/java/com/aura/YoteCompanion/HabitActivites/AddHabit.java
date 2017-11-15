@@ -1,6 +1,8 @@
 package com.aura.YoteCompanion.HabitActivites;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,6 +52,8 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        addNotification();
+
         habit_name = (EditText) findViewById(R.id.edit_habit_name);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -60,7 +64,7 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         tvDate=(TextView)findViewById(R.id.tv_date);
         tvTime=(TextView)findViewById(R.id.tv_time);
 
-        number_of_times = (EditText) findViewById(R.id.edit_text_number_of_times);
+        //number_of_times = (EditText) findViewById(R.id.edit_text_number_of_times);
         details = (EditText) findViewById(R.id.edit_habit_details);
         datePickerButton.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
@@ -88,11 +92,9 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         habit.setDetails(details.getText().toString());
         habit.setDate(tvDate.getText().toString());
         habit.setTime(tvTime.getText().toString());
-        habit.setNumOfTimes(number_of_times.getText().toString());
+        //habit.setNumOfTimes(number_of_times.getText().toString());
         habit.setIsChecked(false);
-
         Map<String, Object> habitValues = habit.toMap();
-
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/Habits/" + mFirebaseUser.getUid() + "/" + key, habitValues);
         mDatabase.updateChildren(childUpdates);
@@ -108,10 +110,10 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         if (v == datePickerButton) {
             // Get Current Date
-            final Calendar c = Calendar.getInstance();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
+            final Calendar cal = Calendar.getInstance();
+            mYear = cal.get(Calendar.YEAR);
+            mMonth = cal.get(Calendar.MONTH);
+            mDay = cal.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -122,21 +124,39 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
             datePickerDialog.show();
         }
         if (v == btnTimePicker) {
-
             // Get Current Time
             final Calendar c = Calendar.getInstance();
             mHour = c.get(Calendar.HOUR_OF_DAY);
             mMinute = c.get(Calendar.MINUTE);
-
             // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                    new TimePickerDialog.OnTimeSetListener() {
+            final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
                         @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            tvTime.setText(hourOfDay + ":" + minute);
+                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                            String am_pm = "";
+                            timePicker.is24HourView();
+                            Calendar cal = Calendar.getInstance();
+                            if (cal.get(Calendar.AM_PM) == Calendar.AM) {am_pm = "AM";}
+                            else if (cal.get(Calendar.AM_PM) == Calendar.PM) {am_pm = "PM";}
+                            String strHrsToShow = (cal.get(Calendar.HOUR) == 0) ?"12":cal.get(Calendar.HOUR)+"";
+                            tvTime.setText( strHrsToShow+":"+cal.get(Calendar.MINUTE)+" "+am_pm );
+
                         }
                     }, mHour, mMinute, false);
             timePickerDialog.show();
         }
     }
+
+    private void addNotification() {
+
+       Calendar calender = Calendar.getInstance();
+       calender.set(Calendar.HOUR_OF_DAY, 12);
+       calender.set(Calendar.MINUTE, 00);
+       calender.set(Calendar.SECOND,00);
+
+       Intent intent = new Intent(getApplicationContext(), Notification_reciever.class);
+       PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+       AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+       alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
 }

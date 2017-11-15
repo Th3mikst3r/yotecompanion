@@ -63,7 +63,7 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
         tvDate=(TextView)findViewById(R.id.tv_date);
         tvTime=(TextView)findViewById(R.id.tv_time);
 
-        number_of_times = (EditText) findViewById(R.id.edit_text_number_of_times);
+        //number_of_times = (EditText) findViewById(R.id.edit_text_number_of_times);
         details = (EditText) findViewById(R.id.edit_habit_details);
         datePickerButton.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
@@ -73,7 +73,7 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
             tvDate.setText(habit.getDate());
             tvTime.setText(habit.getTime());
             details.setText(habit.getDetails());
-            number_of_times.setText(habit.getNumOfTimes());
+            //number_of_times.setText(habit.getNumOfTimes());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,12 +100,13 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
         habit.setDetails(details.getText().toString());
         habit.setDate(tvDate.getText().toString());
         habit.setTime(tvTime.getText().toString());
-        habit.setNumOfTimes(number_of_times.getText().toString());
+        //habit.setNumOfTimes(number_of_times.getText().toString());
         habit.setIsChecked(false);
+        habit.setHabitId(key);
 
         Map<String, Object> habitValues = habit.toMap();
-
         Map<String, Object> childUpdates = new HashMap<>();
+
         childUpdates.put("/Habits/" + mFirebaseUser.getUid() + "/" + key, habitValues);
         mDatabase.updateChildren(childUpdates);
         finish();
