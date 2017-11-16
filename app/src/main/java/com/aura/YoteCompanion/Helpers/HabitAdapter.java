@@ -13,14 +13,13 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
     private List<Habit> habitList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        public TextView name, date, time, numOfTimes;
+        public TextView name, date, details;
 
         public MyViewHolder(View view){
             super(view);
             name = (TextView) view.findViewById(R.id.lbl_habitName);
             date = (TextView) view.findViewById(R.id.lbl_date);
-            //time = (TextView) view.findViewById(R.id.lbl_time);
-            numOfTimes = (TextView) view.findViewById(R.id.lbl_numOfTimes);
+            details = (TextView) view.findViewById(R.id.lbl_habit_details);
         }
     }
 
@@ -39,8 +38,8 @@ public class HabitAdapter extends RecyclerView.Adapter<HabitAdapter.MyViewHolder
         Habit habit = habitList.get(position);
         holder.name.setText(habit.getHabitName().toUpperCase());
         holder.date.setText(habit.getDate());
-        //holder.time.setText(habit.getTime());
-        //holder.numOfTimes.setText(habit.getNumOfTimes());
+        holder.details.setText(habit.getDetails());
+
     }
 
     @Override

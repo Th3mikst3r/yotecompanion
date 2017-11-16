@@ -71,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_habit_date_tv"
+        android:layout_marginTop="9dp"
         android:clickable="true"
         android:textSize="15sp" />
 
@@ -91,45 +92,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/lbl_habit_time_tv"
-        android:clickable="true"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/lbl_habit_repeat_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_habit_time"
-        android:layout_marginTop="15dp"
-        android:text="Number of Repetitions"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lbl_habit_repeat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/lbl_habit_repeat_tv"
+        android:layout_marginTop="11dp"
         android:clickable="true"
         android:textSize="15sp" />
 
 
-    <TextView
+  <!--  <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lbl_saved_at"
         android:textSize="14sp"
         android:layout_marginTop="35dp"
         android:layout_below="@+id/lbl_habit_details"
-        android:textColor="@color/colorAccent"/>
+        android:textColor="@color/colorAccent"/>-->
 
-    <TextView
+    <CheckBox
+        android:id="@+id/cbCompleted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lbl_habit_isChecked"
-        android:textSize="14sp"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/lbl_saved_at"
-        android:textColor="@color/colorAccent"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lbl_habit_time"
+        android:layout_marginTop="21dp"
+        android:text="Completed" />
 </RelativeLayout>

@@ -6,11 +6,11 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,8 +38,8 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUsername;
-    private EditText habit_name, number_of_times, details;
-
+    private EditText habit_name, details;
+    private CheckBox checkBox;
     private Button datePickerButton, btnTimePicker;
     TextView tvDate, tvTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -52,8 +52,6 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        addNotification();
-
         habit_name = (EditText) findViewById(R.id.edit_habit_name);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -64,16 +62,12 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         tvDate=(TextView)findViewById(R.id.tv_date);
         tvTime=(TextView)findViewById(R.id.tv_time);
 
-        //number_of_times = (EditText) findViewById(R.id.edit_text_number_of_times);
         details = (EditText) findViewById(R.id.edit_habit_details);
         datePickerButton.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
-        fab.setVisibility(View.INVISIBLE);
+        checkBox = (CheckBox) findViewById(R.id.isDoneCheckBox);
 
         if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
@@ -84,7 +78,6 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void onSave(View view){
-
         String key = mDatabase.child("Habits").push().getKey();
         Habit habit = new Habit();
         habit.setHabitId(key);
@@ -92,14 +85,13 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
         habit.setDetails(details.getText().toString());
         habit.setDate(tvDate.getText().toString());
         habit.setTime(tvTime.getText().toString());
-        //habit.setNumOfTimes(number_of_times.getText().toString());
-        habit.setIsChecked(false);
+        habit.setIsChecked(checkBoxValue());
         Map<String, Object> habitValues = habit.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/Habits/" + mFirebaseUser.getUid() + "/" + key, habitValues);
         mDatabase.updateChildren(childUpdates);
+        addNotification();
         finish();
-
     }
 
     public void onCancel(View view) {
@@ -148,15 +140,20 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
 
     private void addNotification() {
 
-       Calendar calender = Calendar.getInstance();
-       calender.set(Calendar.HOUR_OF_DAY, 12);
-       calender.set(Calendar.MINUTE, 00);
-       calender.set(Calendar.SECOND,00);
-
-       Intent intent = new Intent(getApplicationContext(), Notification_reciever.class);
-       PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-       AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-       alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Calendar calender = Calendar.getInstance();
+        calender.set(Calendar.HOUR_OF_DAY, 12);
+        calender.set(Calendar.MINUTE, 00);
+        calender.set(Calendar.SECOND,00);
+        Intent intent = new Intent(getApplicationContext(), Notification_reciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
+    private boolean checkBoxValue(){
+        boolean value;
+        if(checkBox.isChecked()) {value = true;
+        }else {value = false;}
+        return value;
+    }
 }

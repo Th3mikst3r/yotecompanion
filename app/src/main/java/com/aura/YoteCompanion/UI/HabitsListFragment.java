@@ -36,7 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides UI for the view with List.
+ * Provides UI for the view with habit list
+ * Michael Hanson 11/16/17
  */
 public class HabitsListFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
 
@@ -94,12 +95,18 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                     if(dataSnapshot.getValue() != null) {
                         String habitName = dataSnapshot.child("habitName").getValue().toString();
                         String details = dataSnapshot.child("details").getValue().toString();
-                        //String numOfTimes = dataSnapshot.child("Number Of Times").getValue().toString();
                         String date = dataSnapshot.child("date").getValue().toString();
                         String time = dataSnapshot.child("time").getValue().toString();
                         String habitId = (String) dataSnapshot.child("habitId").getValue();
-                        boolean isChecked = (boolean) dataSnapshot.child("isChecked").getValue();
-                        Habit habit = new Habit(habitName, details,/* numOfTimes,*/ date, time, habitId, isChecked);
+
+                        boolean isChecked = false;
+                        try {
+                            isChecked = (boolean) dataSnapshot.child("isChecked").getValue();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Habit habit = new Habit(habitName, details, date, time, habitId, isChecked);
+
                         habitList.add(habit);
                         hAdapter.notifyDataSetChanged();
                     }
@@ -140,7 +147,6 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                                     habitList.remove(position);
                                     hAdapter.notifyItemRemoved(position);
                                     Toast.makeText(v.getContext(), "Deleted Successfully " + habitId, Toast.LENGTH_SHORT).show();
-
                                 } catch (Exception e) {
                                     Toast.makeText(v.getContext(), "Failed to delete....", Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();

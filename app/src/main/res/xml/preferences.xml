@@ -8,6 +8,10 @@
         android:key="customDialogDeleteNotes"
         android:title="dialog"/>
 
+    <com.example.test1.CustomDialogPreference
+        android:key="edit_text_pref_changePass"
+        android:title="Change Password"/>
+
 </PreferenceScreen>
 
 

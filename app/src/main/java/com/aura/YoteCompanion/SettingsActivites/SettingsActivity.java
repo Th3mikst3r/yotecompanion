@@ -14,14 +14,21 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.EditText;
 
 import com.aura.YoteCompanion.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
+
+    private static EditText newPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +55,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return true;
                 }
             });
-
-
         }
     }
 
@@ -70,10 +75,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         .getString(preference.getKey(), ""));
     }
 
-    /**
-     * A preference value change listener that updates the preference's summary
-     * to reflect its new value.
-     */
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -133,16 +134,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         intent.putExtra(Intent.EXTRA_TEXT, body);
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
     }
-
-    public void deleteNotepref(Preference preference){
-        Preference myPref = findPreference("customDialogDeleteNotes");
-        myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(SettingsActivity.this, "Preference Clicked ", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+    public static void  changePass() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && !newPassword.getText().toString().trim().equals("")) {
+            if (newPassword.getText().toString().trim().length() < 6) {
+                newPassword.setError("Password too short, enter minimum 6 characters");
+            } else {
+                user.updatePassword(newPassword.getText().toString().trim())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    signOut();
+                                 } else {
+                                    newPassword.setError("Failed");
+                                }
+                         }
+                          });
+                     }
+            } else if (newPassword.getText().toString().trim().equals("")) {
+                  newPassword.setError("Enter password");
+        }
     }
-
+    public static void signOut() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signOut();
+    }
 
 }

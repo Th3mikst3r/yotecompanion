@@ -64,6 +64,7 @@
 
     <!--General-->
     <string name="gen_password">Only works if logged in w/ Email address</string>
+    <string name="key_change_password">key_change_password</string>
 
     <!--About-->
     <string name="pref_header_about">About</string>

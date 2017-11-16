@@ -37,7 +37,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/lbl_numOfTimes"
+        android:id="@+id/lbl_habit_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lbl_habitName"
@@ -54,7 +54,7 @@
         android:id="@+id/lbl_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_numOfTimes"
+        android:layout_below="@+id/lbl_habit_details"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="2dp"
         android:layout_marginTop="10dp"
@@ -63,20 +63,6 @@
         android:maxLength="30"
         android:maxLines="1"
         android:textColor="@color/colorSecondaryText" />
-
-    <!--<TextView
-        android:id="@+id/lbl_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lbl_date"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="80dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/img_note_icon"
-        android:ellipsize="end"
-        android:maxLength="30"
-        android:maxLines="1"
-        android:textColor="@color/colorSecondaryText" />-->
 
 
 </RelativeLayout>

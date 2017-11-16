@@ -148,9 +148,10 @@
     </LinearLayout>
 
     <CheckBox
+        android:id="@+id/isDoneCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mark Complete" />
+        android:text="Completed" />
 
     <LinearLayout
         android:id="@+id/saveandcancel"

@@ -10,18 +10,16 @@ public class Habit implements Serializable {
     private String HabitName;
     private String date;
     private String time;
-    //private String numOfTimes;
     private String details;
     private String habitId;
     private Boolean isChecked;
 
-    public Habit(String habitName, String details, String date, String time, /*String numOfTimes , */ String habitId, Boolean isChecked) {
+    public Habit(String habitName, String details, String date, String time,  String habitId, Boolean isChecked) {
         this.setHabitId(habitId);
         this.setHabitName(habitName);
         this.setDetails(details);
         this.setDate(date);
         this.setTime(time);
-        //this.setNumOfTimes(numOfTimes);
         this.setIsChecked(isChecked);
     }
 
@@ -32,7 +30,6 @@ public class Habit implements Serializable {
         result.put("details", getDetails().toString());
         result.put("date",getDate());
         result.put("time",getTime());
-        //result.put("Number Of Times", getNumOfTimes());
         result.put("isChecked", getIsChecked());
         result.put("habitId" , getHabitId());
         return result;
@@ -72,14 +69,6 @@ public class Habit implements Serializable {
     public String getTime() {
         return time;
     }
-/*
-    public String getNumOfTimes() {
-        return numOfTimes;
-    }
-
-    public void setNumOfTimes(String numOfTimes) {
-        this.numOfTimes = numOfTimes;
-    }*/
 
     public Boolean getIsChecked() {
         return isChecked;

@@ -4,11 +4,11 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,8 +33,8 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUsername;
-    private EditText habit_name, number_of_times, details;
-
+    private EditText habit_name, details;
+    private CheckBox checkbox;
     private Button datePickerButton, btnTimePicker;
     TextView tvDate, tvTime;
     private int mYear, mMonth, mDay, mHour, mMinute;
@@ -46,9 +46,6 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
-        fab.setVisibility(View.INVISIBLE);
 
         Intent intent = getIntent();
         final Habit habit = (Habit) intent.getSerializableExtra("Habit");
@@ -63,7 +60,8 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
         tvDate=(TextView)findViewById(R.id.tv_date);
         tvTime=(TextView)findViewById(R.id.tv_time);
 
-        //number_of_times = (EditText) findViewById(R.id.edit_text_number_of_times);
+        checkbox = (CheckBox) findViewById(R.id.cbCompleted);
+
         details = (EditText) findViewById(R.id.edit_habit_details);
         datePickerButton.setOnClickListener(this);
         btnTimePicker.setOnClickListener(this);
@@ -73,7 +71,8 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
             tvDate.setText(habit.getDate());
             tvTime.setText(habit.getTime());
             details.setText(habit.getDetails());
-            //number_of_times.setText(habit.getNumOfTimes());
+            checkbox.setChecked(habit.getIsChecked());
+            checkbox.setText(String.valueOf(habit.getIsChecked()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,10 +99,10 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
         habit.setDetails(details.getText().toString());
         habit.setDate(tvDate.getText().toString());
         habit.setTime(tvTime.getText().toString());
-        //habit.setNumOfTimes(number_of_times.getText().toString());
-        habit.setIsChecked(false);
-        habit.setHabitId(key);
 
+
+
+        habit.setHabitId(key);
         Map<String, Object> habitValues = habit.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
 

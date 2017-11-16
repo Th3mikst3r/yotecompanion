@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aura.YoteCompanion.Models.Note;
 import com.aura.YoteCompanion.R;
@@ -23,7 +22,6 @@ public class ViewNote extends AppCompatActivity {
     private TextView lbl_saved_at;
     private Button btn_delete_note;
     private FirebaseUser mFirebaseUser;
-    private String noteId;
     DatabaseReference mDatabase;
     private FirebaseAuth mFirebaseAuth;
 
@@ -85,13 +83,12 @@ public class ViewNote extends AppCompatActivity {
             }
         });
 
-
         btn_delete_note.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //Toast.makeText(ViewNote.this, noteId, Toast.LENGTH_LONG).show();
-                mDatabase.removeValue();
-                Toast.makeText(ViewNote.this, "Note deleted...", Toast.LENGTH_SHORT).show();
+                //mDatabase.removeValue();
+                //Toast.makeText(ViewNote.this, "Note deleted...", Toast.LENGTH_SHORT).show();
             }
         });
     }
