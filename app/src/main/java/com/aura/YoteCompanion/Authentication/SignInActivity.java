@@ -79,7 +79,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLoginEmail = (Button) findViewById(R.id.btn_login);
         btnReset = (Button) findViewById(R.id.btn_reset_password);
-        SignInButton gsignInButton = (SignInButton) findViewById(R.id.google_signin_button); //sign in button
+        final SignInButton gsignInButton = (SignInButton) findViewById(R.id.google_signin_button); //sign in button
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
@@ -102,6 +102,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 signIn();
             }
         });
+
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +136,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
-
 
                 //Email and password authentication
                 mFirebaseAuth.signInWithEmailAndPassword(email, password)

@@ -76,14 +76,6 @@
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/google_signin_button"
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content">
-
-        </com.google.android.gms.common.SignInButton>
-
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
@@ -92,6 +84,12 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="0.17"
             android:visibility="gone" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_signin_button"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:text="@string/common_signin_button_text_long" />
 
     </LinearLayout>
 
