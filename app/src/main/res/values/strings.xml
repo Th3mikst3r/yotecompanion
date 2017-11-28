@@ -68,8 +68,8 @@
 
     <!--About-->
     <string name="pref_header_about">About</string>
-    <string name="summary_about">Yote Companion is a seamless app that will help with all your desires </string>
-    <string name="app_version">1.69</string>
+    <string name="summary_about">Yote Companion is a seamless app that will help with all your note taking and habit tracking desires </string>
+    <string name="app_version">Alpha v1.69</string>
     <string name="summary_support">How could we improve?</string>
     <string name="title_send_feedback">Send Feedback</string>
     <string name="title_faq">FAQ</string>

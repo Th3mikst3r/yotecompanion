@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,8 +46,6 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
     private String mUsername;
     private GoogleApiClient mGoogleApiClient;
     private DatabaseReference notesRef;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private String LOG_TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +97,8 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
         lstNotes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         lstNotes.setAdapter(nAdapter);
 
-
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        notesRef = database.getReference("/Users/" + mFirebaseUser.getUid() + "/");
+        notesRef = database.getReference("/Notes/" + mFirebaseUser.getUid() + "/");
 
         notesRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -137,8 +133,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        }
+        switch (item.getItemId()) {/*STUB*/}
         return false;
     }
 

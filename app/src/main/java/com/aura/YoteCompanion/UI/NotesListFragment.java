@@ -71,7 +71,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
         final FirebaseUser mFireBaseUser = mFirebaseAuth.getCurrentUser();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        notesDatabaseRef = database.getReference("/Users/" + mFireBaseUser.getUid() + "/");
+        notesDatabaseRef = database.getReference("/Notes/" + mFireBaseUser.getUid() + "/");
 
       /*  if(lstNotes.getChildCount() == 0){
             Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "You have no notes...", Snackbar.LENGTH_INDEFINITE).
@@ -99,9 +99,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {onDestroyView();
-
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {onDestroyView(); }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {onDestroyView();}
             @Override
@@ -131,7 +129,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
                                 try {
                                     Note note = notesList.get(position);
                                     String noteId = note.getNoteId();
-                                    mDeleteUserNoteDB = FirebaseDatabase.getInstance().getReference().child("/Users/" + mFireBaseUser.getUid() + "/").child(noteId);
+                                    mDeleteUserNoteDB = FirebaseDatabase.getInstance().getReference().child("/Notes/" + mFireBaseUser.getUid() + "/").child(noteId);
                                     mDeleteUserNoteDB.removeValue();
                                     notesList.remove(position);
                                     nAdapter.notifyItemRemoved(position);

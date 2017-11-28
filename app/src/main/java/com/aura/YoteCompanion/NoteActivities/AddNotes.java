@@ -30,7 +30,6 @@ public class AddNotes extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUsername;
-    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,6 @@ public class AddNotes extends AppCompatActivity {
                     EditText txt_note_title = (EditText) findViewById(R.id.txt_note_title);
                     EditText txt_note_details = (EditText) findViewById(R.id.txt_note_details);
 
-
                     //Error handling for fields
                     if (txt_note_title.getText().toString().matches("")) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(AddNotes.this)
@@ -71,29 +69,23 @@ public class AddNotes extends AppCompatActivity {
                         AlertDialog ad = builder.create();
                         ad.setTitle("Incomplete Info"); ad.show();
                     } else {
-                        prg_saving.setIndeterminate(true);
                         prg_saving.setVisibility(View.VISIBLE);
-                        txt_note_details.setEnabled(false);
-                        txt_note_title.setEnabled(false);
 
                         //gives each note a key ID
-                        String key = mDatabase.child("Users").push().getKey();
-
+                        String key = mDatabase.child("User Notes").push().getKey();
                         Note note = new Note();
                         note.setDetails(txt_note_details.getText().toString());
                         note.setTitle(txt_note_title.getText().toString());
                         note.setDateSaved(new Date());
                         note.setNoteId(key);
+
                         Map<String, Object> noteValues = note.toMap();
-
                         Map<String, Object> childUpdates = new HashMap<>();
-
-                        Map<String, Object> allNotesMap = new HashMap<>();
-                        allNotesMap.put("/All-Notes/" + key, noteValues);
-
-                        childUpdates.put("/Users/" + mFirebaseUser.getUid() + "/" + key, noteValues);
+                        //Map<String, Object> allNotesMap = new HashMap<>();
+                        //allNotesMap.put("/All-Notes/" + key, noteValues);
+                        childUpdates.put("/Notes/" + mFirebaseUser.getUid() + "/" + key, noteValues);
                         mDatabase.updateChildren(childUpdates);
-
+                        //mDatabase.updateChildren(allNotesMap);
                         mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

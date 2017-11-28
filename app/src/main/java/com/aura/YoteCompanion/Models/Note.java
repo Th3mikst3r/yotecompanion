@@ -18,29 +18,28 @@ public class Note implements Serializable {
     public String getTitle() {
         return Title;
     }
-
     public void setTitle(String title) {
         Title = title;
     }
-
     public String getDetails() {
         return Details;
     }
-
     public void setDetails(String details) {
         Details = details;
     }
-
     public Date getDateSaved() {
         return DateSaved;
     }
-
     public void setDateSaved(Date dateSaved) {
         DateSaved = dateSaved;
     }
-
-    public Note() {//Constructor
+    public String getNoteId() {
+        return noteId;
     }
+    public void setNoteId(String noteId) {
+        this.noteId = noteId;
+    }
+    public Note() {/*Constructor*/}
 
     public Note(String title, String details, String date, String noteId) {
         this.setTitle(title);
@@ -63,13 +62,5 @@ public class Note implements Serializable {
         result.put("dateSaved", getDateSaved().toString());
         result.put("noteId",getNoteId());
         return result;
-    }
-
-    public String getNoteId() {
-        return noteId;
-    }
-
-    public void setNoteId(String noteId) {
-        this.noteId = noteId;
     }
 }

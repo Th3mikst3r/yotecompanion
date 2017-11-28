@@ -38,51 +38,40 @@ public class Habit implements Serializable {
     public String getHabitName() {
         return HabitName;
     }
-
     public void setHabitName(String habitName) {
         HabitName = habitName;
     }
-
     public String getDetails() {
         return details;
     }
-
     public void setDetails(String details) {
         this.details = details;
     }
-
-    public Habit() {//Constructor
+    public void setHabitId(String habitId) {
+        this.habitId = habitId;
     }
-
+    public String getHabitId() {
+        return habitId;
+    }
+    public Habit() { /*Constructor */ }
     public String getDate() {
         return date;
     }
-
     public void setTime(String time) {
         this.time = time;
     }
-
     public void setDate(String date) {
         this.date = date;
     }
-
     public String getTime() {
         return time;
     }
-
     public Boolean getIsChecked() {
         return isChecked;
     }
-
     public void setIsChecked(Boolean isChecked) {
         this.isChecked = isChecked;
     }
 
-    public void setHabitId(String habitId) {
-        this.habitId = habitId;
-    }
 
-    public String getHabitId() {
-        return habitId;
-    }
 }

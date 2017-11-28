@@ -38,7 +38,7 @@ public class ViewNote extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         final String noteId = note.getNoteId();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("/Users/" + mFirebaseUser.getUid() + "/").child(noteId);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("/Notes/" + mFirebaseUser.getUid() + "/").child(noteId);
 
 
         lbl_details = (TextView) findViewById(R.id.lbl_note_details);

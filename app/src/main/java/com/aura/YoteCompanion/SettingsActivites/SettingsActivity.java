@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.aura.YoteCompanion.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -122,14 +123,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         String body = null;
         try {
             body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
+            body = "\n\n---------------------------------------------------\n Device OS: Android \n Device OS version: " +
                     Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
                     "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
         } catch (PackageManager.NameNotFoundException e) {
+            Toast.makeText(context, "We ran into a bug :(", Toast.LENGTH_SHORT).show();
         }
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@yotecompaion.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Michael.d.hanson@coyotes.usd.edu"});
+        intent.putExtra(Intent.EXTRA_CC, new String[]{"Tony.nguyen@coyotes.usd.edu"});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Need Help");
         intent.putExtra(Intent.EXTRA_TEXT, body);
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
