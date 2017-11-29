@@ -74,7 +74,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
 
         notesDatabaseRef = database.getReference("/Notes/" + mFireBaseUser.getUid() + "/");
 
-        if(lstNotes.getChildCount() == 0){
+        if(nAdapter.getItemCount() == 0){
             Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "You have no notes...", Snackbar.LENGTH_INDEFINITE).
                     setAction("Add Note", new View.OnClickListener() {
                         @Override
