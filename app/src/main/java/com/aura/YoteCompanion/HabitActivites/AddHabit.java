@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -78,20 +79,29 @@ public class AddHabit extends AppCompatActivity implements View.OnClickListener 
     }
 
     public void onSave(View view){
-        String key = mDatabase.child("Habits").push().getKey();
-        Habit habit = new Habit();
-        habit.setHabitId(key);
-        habit.setHabitName(habit_name.getText().toString());
-        habit.setDetails(details.getText().toString());
-        habit.setDate(tvDate.getText().toString());
-        habit.setTime(tvTime.getText().toString());
-        habit.setIsChecked(checkBoxValue());
-        Map<String, Object> habitValues = habit.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/Habits/" + mFirebaseUser.getUid() + "/" + key, habitValues);
-        mDatabase.updateChildren(childUpdates);
-        addNotification();
-        finish();
+        //Error handling for fields
+        if (habit_name.getText().toString().matches("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddHabit.this)
+                    .setMessage("Habit name blank")
+                    .setCancelable(false).setPositiveButton("OK", null);
+            AlertDialog ad = builder.create();
+            ad.setTitle("Incomplete Info"); ad.show();
+        } else {
+            String key = mDatabase.child("Habits").push().getKey();
+            Habit habit = new Habit();
+            habit.setHabitId(key);
+            habit.setHabitName(habit_name.getText().toString());
+            habit.setDetails(details.getText().toString());
+            habit.setDate(tvDate.getText().toString());
+            habit.setTime(tvTime.getText().toString());
+            habit.setIsChecked(checkBoxValue());
+            Map<String, Object> habitValues = habit.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/Habits/" + mFirebaseUser.getUid() + "/" + key, habitValues);
+            mDatabase.updateChildren(childUpdates);
+            addNotification();
+            finish();
+        }
     }
 
     public void onCancel(View view) {

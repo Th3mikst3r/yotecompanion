@@ -34,7 +34,7 @@ public class AddNotes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //
+
         setContentView(R.layout.activity_add_notes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,8 +43,8 @@ public class AddNotes extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+        // Not signed in, launch the Sign In activity
         if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignInActivity.class));
             finish();
             return;
@@ -57,19 +57,19 @@ public class AddNotes extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ProgressBar prg_saving = (ProgressBar) findViewById(R.id.prg_saving);
+                    ProgressBar pb = (ProgressBar) findViewById(R.id.prg_saving);
                     EditText txt_note_title = (EditText) findViewById(R.id.txt_note_title);
                     EditText txt_note_details = (EditText) findViewById(R.id.txt_note_details);
 
                     //Error handling for fields
                     if (txt_note_title.getText().toString().matches("")) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddNotes.this)
+                            AlertDialog.Builder builder = new AlertDialog.Builder(AddNotes.this)
                                 .setMessage("You have not entered a title")
                                 .setCancelable(false).setPositiveButton("OK", null);
                         AlertDialog ad = builder.create();
                         ad.setTitle("Incomplete Info"); ad.show();
                     } else {
-                        prg_saving.setVisibility(View.VISIBLE);
+                        pb.setVisibility(View.VISIBLE);
 
                         //gives each note a key ID
                         String key = mDatabase.child("User Notes").push().getKey();
@@ -81,11 +81,7 @@ public class AddNotes extends AppCompatActivity {
 
                         Map<String, Object> noteValues = note.toMap();
                         Map<String, Object> childUpdates = new HashMap<>();
-                        //Map<String, Object> allNotesMap = new HashMap<>();
-                        //allNotesMap.put("/All-Notes/" + key, noteValues);
                         childUpdates.put("/Notes/" + mFirebaseUser.getUid() + "/" + key, noteValues);
-                        mDatabase.updateChildren(childUpdates);
-                        //mDatabase.updateChildren(allNotesMap);
                         mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -102,38 +98,6 @@ public class AddNotes extends AppCompatActivity {
 
                             }
                         });
-
-                        /*if (txt_note_title.getText().toString().matches(note.getTitle())) {
-                            //Toast.makeText(EditNote.this, "Note already exists", Toast.LENGTH_SHORT).show();
-                            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayoutAdd), "Note already exists", Snackbar.LENGTH_LONG).
-                                    setAction("Ok", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Snackbar snackbar1 = Snackbar.make(findViewById(R.id.coordinatorLayoutAdd), "Ok", Snackbar.LENGTH_SHORT);
-                                            snackbar1.show();
-                                            finish();
-                                        }
-                                    });
-                            snackbar.show();
-                        }else {
-                            mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if (databaseError == null) {
-                                        Toast toast = Toast.makeText(getApplicationContext(), "Note saved", Toast.LENGTH_LONG);
-                                        toast.show();
-                                        finish();
-                                    } else {
-                                        Toast toast = Toast.makeText(getApplicationContext(),
-                                                "Error: " + databaseError.getMessage(), Toast.LENGTH_LONG);
-                                        toast.show();
-                                        finish();
-                                    }
-
-                                }
-                            });
-                        }*/
-
                     }
                 }
             });

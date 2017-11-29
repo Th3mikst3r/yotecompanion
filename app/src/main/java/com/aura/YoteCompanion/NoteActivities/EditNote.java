@@ -32,7 +32,6 @@ public class EditNote extends AppCompatActivity {
     private String mUsername;
     public static final String ANONYMOUS = "anonymous";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class EditNote extends AppCompatActivity {
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
 
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
@@ -59,7 +57,7 @@ public class EditNote extends AppCompatActivity {
         txt_title = (EditText) findViewById(R.id.txt_note_title);
 
         Intent intent = getIntent();
-        Note note = (Note) intent.getSerializableExtra("Note");
+        final Note note = (Note) intent.getSerializableExtra("Note");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_save);
         if (fab != null) {
@@ -69,11 +67,12 @@ public class EditNote extends AppCompatActivity {
                     ProgressBar prg_saving = (ProgressBar) findViewById(R.id.prg_saving);
                     EditText txt_note_title = (EditText) findViewById(R.id.txt_note_title);
                     EditText txt_note_details = (EditText) findViewById(R.id.txt_note_details);
-
                     String title = txt_note_title.getText().toString();
-                    if (title.matches("")) {
+
+                    //Basic error checking for fields
+                    if (title.matches("" ) /*|| title.matches(note.getTitle())*/) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(EditNote.this)
-                                .setMessage("You have not entered a title").setCancelable(false)
+                                .setMessage("Title is blank").setCancelable(false)
                                 .setPositiveButton("OK", null);
                         AlertDialog ad = builder.create();
                         ad.setTitle("Incomplete Info"); ad.show();
@@ -111,44 +110,11 @@ public class EditNote extends AppCompatActivity {
                                 }
                             }
                         });
-
-                        /*NOT WORKING YET, THIS IS THE ERROR HANDLING FOR SAVING OVER EXISTING NOTES WITH SAME TITLE.*/
-                        /*if (title.matches(note.getTitle())) {
-                            //Toast.makeText(EditNote.this, "Note already exists", Toast.LENGTH_SHORT).show();
-                            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinatorLayout), "Note already exists", Snackbar.LENGTH_LONG).
-                            setAction("Ok", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Snackbar snackbar1 = Snackbar.make(findViewById(R.id.coordinatorLayout), "Ok", Snackbar.LENGTH_SHORT);
-                                    snackbar1.show();
-                                    finish();
-                                }
-                            });
-                            snackbar.show();
-                        }else {
-                            notesRef.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if(databaseError == null) {
-                                        Toast toast = Toast.makeText(getApplicationContext(), "Note saved successfully", Toast.LENGTH_LONG);
-                                        toast.show();
-                                        finish();
-                                    }
-                                    else {
-                                        Toast toast = Toast.makeText(getApplicationContext(), "An error occurred while saving the note. Error: "
-                                                + databaseError.getMessage(), Toast.LENGTH_LONG);
-                                        toast.show();
-                                    }
-                                }
-                            });
-                        }*/
-
                     }
                 }
             });
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //
         txt_title.setText(note.getTitle());
         txt_details.setText(note.getDetails());
     }

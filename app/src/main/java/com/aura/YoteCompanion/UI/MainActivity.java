@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        Toast.makeText(this, "Wecome: " + mFirebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Welcome: " + mFirebaseUser.getDisplayName(), Toast.LENGTH_SHORT).show();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignInActivity.class));
@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mFirebaseUser = null;
-                //mUsername = ANONYMOUS;
                 Intent log_out = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(log_out);
                 break;

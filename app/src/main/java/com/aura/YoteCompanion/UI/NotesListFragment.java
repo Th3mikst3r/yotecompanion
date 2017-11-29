@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,9 +74,9 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
 
         notesDatabaseRef = database.getReference("/Notes/" + mFireBaseUser.getUid() + "/");
 
-      /*  if(lstNotes.getChildCount() == 0){
+        if(lstNotes.getChildCount() == 0){
             Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutNotesList), "You have no notes...", Snackbar.LENGTH_INDEFINITE).
-                    setAction("Create one", new View.OnClickListener() {
+                    setAction("Add Note", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), AddNotes.class);
@@ -83,7 +84,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
                         }
                     });
             snackbar.show();
-        }*/
+        }
         notesDatabaseRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -97,28 +98,24 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
                     nAdapter.notifyDataSetChanged();
                 }
             }
-
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {onDestroyView(); }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {onDestroyView();}
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                onDestroyView();
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
             @Override
-            public void onCancelled(DatabaseError databaseError) {onDestroyView();}
+            public void onCancelled(DatabaseError databaseError) { }
         });
 
         lstNotes.addOnItemTouchListener(new NotesList.RecyclerTouchListener(getActivity(), lstNotes, new NotesList.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Note note = notesList.get(position);
-                Intent intent = new Intent(getActivity().getApplicationContext(), ViewNote.class);
-                intent.putExtra("Note", note);
-                startActivity(intent);
+                    Note note = notesList.get(position);
+                    Intent intent = new Intent(getActivity().getApplicationContext(), ViewNote.class);
+                    intent.putExtra("Note", note);
+                    startActivity(intent);
             }
-
             @Override
             public void onLongClick(View view, final int position) {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
@@ -159,14 +156,7 @@ public class NotesListFragment extends Fragment implements GoogleApiClient.OnCon
         return  v;
     }
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        notesList.clear();
-    }
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
     public void refresh() {
         new Handler().postDelayed(new Runnable() {

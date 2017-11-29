@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -69,17 +70,15 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
         lstHabit.setLayoutManager(new LinearLayoutManager(getActivity()));
         lstHabit.setAdapter(hAdapter);
 
-
-
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         final FirebaseUser mFireBaseUser = mFirebaseAuth.getCurrentUser();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         habitRef = database.getReference("/Habits/" + mFireBaseUser.getUid() + "/");
 
-      /*  if(hAdapter.getItemCount() == 0){
+        if(hAdapter.getItemCount() == 0){
             Snackbar snackbar = Snackbar.make(v.findViewById(R.id.coordinatorLayoutHabitsList), "You have no habits", Snackbar.LENGTH_INDEFINITE).
-                    setAction("Create one", new View.OnClickListener() {
+                    setAction("Add a habit", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getActivity(), AddHabit.class);
@@ -87,7 +86,7 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                         }
                     });
             snackbar.show();
-        }*/
+        }
 
         habitRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -146,7 +145,7 @@ public class HabitsListFragment extends Fragment implements GoogleApiClient.OnCo
                                     mDeleteUserHabitDB.removeValue();
                                     habitList.remove(position);
                                     hAdapter.notifyItemRemoved(position);
-                                    Toast.makeText(v.getContext(), "Deleted Successfully " + habitId, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), "Deleted Successfully " /*+ habitId*/, Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     Toast.makeText(v.getContext(), "Failed to delete....", Toast.LENGTH_SHORT).show();
                                     e.printStackTrace();

@@ -13,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.aura.YoteCompanion.Authentication.SignInActivity;
 import com.aura.YoteCompanion.Models.Habit;
@@ -74,11 +73,7 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
             checkbox.setChecked(habit.getIsChecked());
             checkbox.setText(String.valueOf(habit.getIsChecked()));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Cant Fetch Habit :( ", Toast.LENGTH_SHORT).show();
-        }
-
+        } catch (Exception e) { e.printStackTrace();}
 
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
@@ -99,8 +94,6 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
         habit.setDetails(details.getText().toString());
         habit.setDate(tvDate.getText().toString());
         habit.setTime(tvTime.getText().toString());
-
-
 
         habit.setHabitId(key);
         Map<String, Object> habitValues = habit.toMap();
@@ -133,7 +126,6 @@ public class EditHabit extends AppCompatActivity implements View.OnClickListener
             datePickerDialog.show();
         }
         if (v == btnTimePicker) {
-
             // Get Current Time
             final Calendar c = Calendar.getInstance();
             mHour = c.get(Calendar.HOUR_OF_DAY);

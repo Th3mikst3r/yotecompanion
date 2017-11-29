@@ -184,7 +184,8 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
                 Intent log_out = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(log_out);
                 break;
-            default: return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
         return false;
     }
@@ -235,8 +236,6 @@ public class HabitList extends AppCompatActivity implements GoogleApiClient.OnCo
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         }
     }
-
-
     /*public void onCheckBoxChicked(View view){
         final CheckBox checkBox = (CheckBox) findViewById(R.id.cb_done);
         //checkBox.setChecked(!checkBox.isChecked());

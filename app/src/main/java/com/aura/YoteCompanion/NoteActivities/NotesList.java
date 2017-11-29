@@ -116,8 +116,7 @@ public class NotesList extends AppCompatActivity implements GoogleApiClient.OnCo
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
